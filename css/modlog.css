@@ -14,6 +14,10 @@ html, body {
   box-shadow: none;
   padding: 0;
 }
+.card .card-content {
+  padding-left: 0.5rem;
+  padding-top: 2rem;
+}
 .row > .right {
   position: absolute;
   top: 0.5rem;
@@ -30,4 +34,10 @@ html, body {
   font-size: 12px;
   white-space: normal;
   margin: 0;
+}
+
+@media only screen and (min-width: 768px) {  
+  .card .card-content {
+    padding: 24px;
+  }
 }
