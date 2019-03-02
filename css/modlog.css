@@ -1,0 +1,25 @@
+.card-content.row {
+  margin-bottom: 0;
+  position: relative;
+}
+.card-action.collapsible {
+  box-shadow: none;
+  padding: 0;
+}
+.row > .right {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  text-align: right;
+  font-size: 12px;
+}
+.row > .right .material-icons {
+  font-size: 16px;
+  vertical-align: text-bottom;
+}
+.row .target-body {
+  padding-top: 1rem;
+  font-size: 12px;
+  white-space: normal;
+  margin: 0;
+}

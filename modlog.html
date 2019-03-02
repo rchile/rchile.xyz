@@ -4,38 +4,9 @@
   <meta charset="utf-8" />
   <title>/r/Chile modlog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
-  <style type="text/css">
-    .card-content.row {
-      margin-bottom: 0;
-      position: relative;
-    }
-    .card-action.collapsible {
-      box-shadow: none;
-      padding: 0;
-    }
-    .row > .right {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      text-align: right;
-      font-size: 12px;
-    }
-    .row > .right .material-icons {
-      font-size: 16px;
-      vertical-align: text-bottom;
-    }
-    .row .target-body {
-      padding-top: 1rem;
-      font-size: 12px;
-      white-space: normal;
-      margin: 0;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="css/modlog.css">  
 </head>
 <body>
   <nav>
@@ -211,36 +182,10 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/3.0.2/timeago.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-
-  <script>
-    (function(d) {
-      let app = new Vue({
-        el: '#app',
-        data: { 
-          entries: [],
-          dateFormat: function(theDate) {
-            let tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-            return (new Date(theDate*1000 - tzoffset)).toISOString().slice(0, -1);
-          },
-          dateAgo: function(theDate) {
-            return timeago().format(theDate*1000, 'es')
-          }
-        },
-        updated: function(){ this.$nextTick(() => {
-          M.Collapsible.init(d.querySelectorAll('.collapsible'));
-          M.Modal.init(d.querySelectorAll('.modal'));
-        })}
-      });
-      
-      let endpoint = 'https://modlog.rchile.xyz/';
-      axios.post(endpoint, {}).then(resp => {
-        app.entries = resp.data;
-        d.querySelector("#app").style.visibility = 'visible';
-      });
-    })(document);
-  </script>
+  <script src="js/modlog.js"></script>
 </body>
 </html>
