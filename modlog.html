@@ -14,7 +14,7 @@
       <ul class="left">
         <li><a href="#">/r/chile modlog</a></li>
       </ul>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <ul id="nav-mobile" class="right hide-on-small-and-down">
         <li><a href="https://reddit.com/r/chile" target="_blank">Subreddit</a></li>
         <li><a href="https://reddit.com/r/chile/wiki/reglas" target="_blank">Reglas</a></li>
         <li><a href="https://reddit.com/message/compose?to=/r/chile" target="_blank">Modmail</a></li>
@@ -163,6 +163,13 @@
                   {{ entry.description }} - {{ entry.details }}
                 </div>
             </div>
+            <div v-else-if="entry.action == 'unspoiler'">
+                <div class="col s1"><i class="material-icons">visibility</i></div>
+                <div class="col s11">
+                  Publicación desmarcada como spoiler. <br>
+                  "{{ entry.target_title }}" por /u/{{ entry.target_author }}
+                </div>
+            </div>
             <div v-else>
               <div class="col s1"><i class="material-icons">insert_emoticon</i></div>
               <div class="col s11">
@@ -173,7 +180,7 @@
 
           <div v-bind:id="'modal-'+entry.id" class="modal">
               <div class="modal-content">
-                <h5>Datos JSON de la acción</h5>
+                <h5>Datos en bruto de la acción</h5>
                 <p><pre style="overflow: auto;">{{ entry }}</pre></p>
               </div>
             </div>
