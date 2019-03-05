@@ -86,7 +86,7 @@ class ModAction {
       case 'unbanuser':
         if (this.entry.description === 'was temporary') {
           this.description = 'Fin del ban temporal de ' + 
-            ModAction._userLink(ModAction._userLink(this.entry.target_author));
+            ModAction._userLink(this.entry.target_author);
           this.icon = 'how_to_reg';
         }
         break;
@@ -127,6 +127,19 @@ class ModAction {
         this.description = 'Publicación desmarcada como spoiler.';
         this.details = ModAction._fPostData(this.entry);
         this.icon = 'visibility';
+        break;
+      case 'unignorereports':
+        if (this.entry.target_title) {
+          this.description = 'Ignorado de reportes de publicación revertido.';
+          this.details = ModAction._fPostData(this.entry);
+          this.icon = 'assignment_turned_in';
+        } else {
+          let ulink5 = ModAction._userLink(this.entry.target_author);
+          this.description = `Ignorado de reportes del comentario de ${ulink5} revertido.`;
+          this.content = this.entry.target_body;
+          this.icon = 'assignment_turned_in';
+        }
+        break;
     }
   }
 
