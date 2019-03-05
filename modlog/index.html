@@ -26,6 +26,7 @@
 
       <div v-for="action in modActions">
         <div class="card">
+
           <div class="card-content row">
             <div class="right">
               <span v-bind:title='action.date'>
@@ -49,7 +50,7 @@
                 <pre class="target-body" v-if="action.content">{{ action.content }}</pre>
               </div>
             </div>
-          </div>
+          </div> <!-- /.card-content -->
 
           <div v-bind:id="'modal-'+action.entry.id" class="modal">
             <div class="modal-content">
@@ -57,8 +58,9 @@
               <p><pre style="overflow: auto;">{{ action.entry }}</pre></p>
             </div>
           </div>
-        </div>
-      </div>
+
+        </div> <!-- /.card -->
+      </div> <!-- /for -->
 
       <div class="card" v-if="loading">
         <div class="card-content center-align">
@@ -80,8 +82,8 @@
           </span>
         </div>
       </div>
-    </div>
-  </div>
+    </div> <!-- /#app.card-content -->
+  </div> <!-- /.container -->
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/3.0.2/timeago.min.js"></script>
