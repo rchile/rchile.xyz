@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>/r/Chile modlog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" type="text/css" media="screen" href="css/modlog.css">  
+</head>
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <ul class="left">
+        <li><a href="#">/r/chile modlog</a></li>
+      </ul>
+      <ul id="nav-mobile" class="right hide-on-small-and-down">
+        <li><a href="https://reddit.com/r/chile" target="_blank">Subreddit</a></li>
+        <li><a href="https://reddit.com/r/chile/wiki/reglas" target="_blank">Reglas</a></li>
+        <li><a href="https://reddit.com/message/compose?to=/r/chile" target="_blank">Modmail</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="page-content" id="app">
+      <div v-for="action in modActions">
+        <div class="card">
+          <div class="card-content row">
+            <div class="right">
+              <span v-bind:title='action.date'>
+                <i class="material-icons">access_time</i>
+                {{ action.dateAgo() }}
+              </span> |
+              <a v-bind:href="action.modURL" target="_blank">{{ action.entry.mod }}</a> |
+              <a v-if="action.entry.target_permalink" v-bind:href="action.targetPermalink" target="_blank">
+                <i class="material-icons">open_in_new</i>
+              </a>
+              <a class="waves-effect waves-light modal-trigger" v-bind:href="'#modal-'+action.entry.id">
+                <i class="material-icons">code</i>
+              </a>
+            </div>
+
+            <div>
+              <div class="col s1"><i class="material-icons">{{ action.icon }}</i></div>
+              <div class="col s11">
+                <p v-if="action.description" style="font-weight: bold" v-html="action.description"></p>
+                <p v-if="action.details" v-html="action.details"></p>
+                <pre class="target-body" v-if="action.content">{{ action.content }}</pre>
+              </div>
+            </div>
+          </div>
+
+          <div v-bind:id="'modal-'+action.entry.id" class="modal">
+            <div class="modal-content">
+              <div style="font-size: 24px;">Datos en bruto de la acción</div>
+              <p><pre style="overflow: auto;">{{ action.entry }}</pre></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card" v-if="loading">
+        <div class="card-content center-align">
+          Cargando...
+        </div>
+      </div>
+      <div class="card" v-if="!loading && modActions.length == 0">
+        <div class="card-content center-align">
+          No hay acciones de moderador.
+        </div>
+      </div>
+      <div class="card" v-if="error">
+        <div class="card-content center-align">
+          <span v-if="modActions.length == 0">
+            No fue posible cargar las acciones de moderador.
+          </span>
+          <span v-else>
+            No fue posible cargar más acciones de moderador.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/3.0.2/timeago.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+  <script src="js/utils.js"></script>
+  <script src="js/ModAction.js"></script>
+  <script src="js/modlog.js"></script>
+</body>
+</html>

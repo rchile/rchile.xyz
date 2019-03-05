@@ -2,6 +2,10 @@ html, body {
   background: #eee;
 }
 
+#app {
+  visibility: hidden;
+}
+
 .container {
   padding-top: 1rem;
 }
