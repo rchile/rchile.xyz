@@ -1,15 +1,12 @@
 html, body {
   background: #eee;
 }
-
 #app {
   visibility: hidden;
 }
-
 .container {
   padding-top: 1rem;
 }
-
 .card-content.row {
   margin-bottom: 0;
   position: relative;
@@ -17,10 +14,6 @@ html, body {
 .card-action.collapsible {
   box-shadow: none;
   padding: 0;
-}
-.card .card-content {
-  padding-left: 0.5rem;
-  padding-top: 2rem;
 }
 .row > .right {
   position: absolute;
@@ -39,10 +32,4 @@ html, body {
   white-space: normal;
   margin: 0;
   word-wrap: anywhere;
-}
-
-@media only screen and (min-width: 768px) {  
-  .card .card-content {
-    padding: 24px;
-  }
 }

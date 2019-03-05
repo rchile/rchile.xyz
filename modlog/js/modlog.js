@@ -28,13 +28,37 @@
       app.loading = false;
       allowLoad = true;
 
-      let result = resp.data.map(entry => new ModAction(entry));
+      let result = entriesFilter(resp.data);
       app.modActions = app.modActions.concat(result);
     }).catch(function(error) {
       app.loading = false;
       app.error = true;
       console.error(error);
     });
+  }
+
+  /**
+   * Filters modlog entries. Currently, it merges the distinguish and sticky actions.
+   * @param  {array} entries Entries fetched from the API.
+   * @return {array}         Filtered entries.
+   */
+  function entriesFilter(entries) {
+    return entries.reduce((final, curr) => {
+      let nEntries = final.length;
+      if (nEntries > 0) {
+        // Join sticky and distinguish entries
+        let last = final[nEntries-1].entry;
+        if (last.mod == curr.mod && last.target_fullname == curr.target_fullname && 
+            last.action == 'distinguish' && curr.action == 'sticky') {
+          last.action = 'stickydistinguish';
+          final[nEntries-1] = new ModAction(last);
+          return final;
+        }
+      }
+
+      final.push(new ModAction(curr));
+      return final;
+    }, []);
   }
 
   w.addScrollListener(scrollY => {

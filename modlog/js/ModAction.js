@@ -66,6 +66,18 @@ class ModAction {
           this.icon = 'location_off';
         }
         break;
+      case 'stickydistinguish':
+        if (this.entry.target_title) {
+          this.description = 'Publicación fijada y distinguida.';
+          this.details = ModAction._fPostData(this.entry);
+          this.icon = 'pin_drop';
+        } else {
+          let ulink = ModAction._userLink(this.entry.target_author);
+          this.description = `Comentario de moderador fijado y distinguido.`;
+          this.content = this.entry.target_body;
+          this.icon = 'location_on';
+        }
+        break;
       case 'approvelink':
         this.description = 'Publicación aprobada.';
         this.details = ModAction._fPostData(this.entry);
