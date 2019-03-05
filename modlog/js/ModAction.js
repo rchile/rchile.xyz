@@ -140,6 +140,12 @@ class ModAction {
           this.icon = 'assignment_turned_in';
         }
         break;
+      case 'community_widgets':
+        if (this.entry.details === 'edited_widget') {
+          this.description = 'Widget del sidebar editado.';
+          this.icon = 'border_color';
+        }
+        break;
     }
   }
 
