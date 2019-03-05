@@ -23,8 +23,9 @@
   </nav>
   <div class="container">
     <div class="page-content" id="app">
+
       <div v-for="action in modActions">
-        <div class="card">
+        <div class="card" v-click="open(action)">
           <div class="card-content row">
             <div class="right">
               <span v-bind:title='action.date'>
@@ -58,6 +59,7 @@
           </div>
         </div>
       </div>
+
       <div class="card" v-if="loading">
         <div class="card-content center-align">
           Cargando...
