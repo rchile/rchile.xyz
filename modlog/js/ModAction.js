@@ -9,10 +9,7 @@ class ModAction {
     this.description = 'Acción: ' + this.entry.action;
     this.details = '';
     this.content = '';
-    this.initData();
-  }
 
-  initData() {
     switch(this.entry.action) {
       case 'removelink':
         this.description = this.entry.mod === 'AutoModerator' ?
@@ -70,12 +67,12 @@ class ModAction {
         if (this.entry.target_title) {
           this.description = 'Publicación fijada y distinguida.';
           this.details = ModAction._fPostData(this.entry);
-          this.icon = 'pin_drop';
+          this.icon = 'folder_special';
         } else {
           let ulink = ModAction._userLink(this.entry.target_author);
           this.description = `Comentario de moderador fijado y distinguido.`;
           this.content = this.entry.target_body;
-          this.icon = 'location_on';
+          this.icon = 'local_activity';
         }
         break;
       case 'approvelink':
@@ -87,13 +84,13 @@ class ModAction {
         let ulink = ModAction._userLink(this.entry.target_author);
         this.description = `Comentario de ${ulink} aprobado.`;
         this.content = this.entry.target_body;
-        this.icon = 'done';
+        this.icon = 'add_comment';
         break;
       case 'removecomment':
         let ulink2 = ModAction._userLink(this.entry.target_author);
         this.description = `Comentario de ${ulink2} eliminado.`;
         this.content = this.entry.target_body;
-        this.icon = 'done';
+        this.icon = 'speaker_notes_off';
         break;
       case 'unbanuser':
         if (this.entry.description === 'was temporary') {
