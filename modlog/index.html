@@ -37,7 +37,7 @@
               <a v-if="action.entry.target_permalink" v-bind:href="action.targetPermalink" target="_blank">
                 <i class="material-icons">open_in_new</i>
               </a>
-              <a class="waves-effect waves-light modal-trigger" v-bind:href="'#modal-'+action.entry.id">
+              <a class="waves-effect waves-light" v-on:click="details(action, $event)" href="#">
                 <i class="material-icons">code</i>
               </a>
             </div>
@@ -51,13 +51,6 @@
               </div>
             </div>
           </div> <!-- /.card-content -->
-
-          <div v-bind:id="'modal-'+action.entry.id" class="modal">
-            <div class="modal-content">
-              <div style="font-size: 24px;">Datos en bruto de la acción</div>
-              <p><pre style="overflow: auto;">{{ action.entry }}</pre></p>
-            </div>
-          </div>
 
         </div> <!-- /.card -->
       </div> <!-- /for -->
@@ -82,8 +75,17 @@
           </span>
         </div>
       </div>
+
+      <div id="entry-modal" class="modal">
+        <div class="modal-content">
+          <div style="font-size: 24px;">Datos en bruto de la acción</div>
+          <p v-if="!!selectedAction"><pre style="overflow: auto;">{{selectedAction ? selectedAction.entry : ''}}</pre></p>
+        </div>
+      </div>
+
     </div> <!-- /#app.card-content -->
   </div> <!-- /.container -->
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/3.0.2/timeago.min.js"></script>
