@@ -43,8 +43,8 @@
             </div>
 
             <div>
-              <div class="col s1"><i class="material-icons">{{ action.icon }}</i></div>
-              <div class="col s11">
+              <div class="col s12 m1"><i class="material-icons">{{ action.icon }}</i></div>
+              <div class="col s12 m11">
                 <p v-if="action.description" style="font-weight: bold" v-html="action.description"></p>
                 <p v-if="action.details" v-html="action.details"></p>
                 <pre class="target-body" v-if="action.content">{{ action.content }}</pre>
