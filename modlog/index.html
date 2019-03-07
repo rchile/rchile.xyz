@@ -15,6 +15,7 @@
         <li><a href="#">/r/chile modlog</a></li>
       </ul>
       <ul id="nav-mobile" class="right hide-on-small-and-down">
+        <li><a class="modal-trigger" href="#about-modal">Acerca de</a></li>
         <li><a href="https://reddit.com/r/chile" target="_blank">Subreddit</a></li>
         <li><a href="https://reddit.com/r/chile/wiki/reglas" target="_blank">Reglas</a></li>
         <li><a href="https://reddit.com/message/compose?to=/r/chile" target="_blank">Modmail</a></li>
@@ -80,6 +81,28 @@
         <div class="modal-content">
           <div style="font-size: 24px;">Datos en bruto de la acción</div>
           <p v-if="!!selectedAction"><pre style="overflow: auto;">{{selectedAction ? selectedAction.entry : ''}}</pre></p>
+        </div>
+      </div>
+
+      <div id="about-modal" class="modal">
+        <div class="modal-content">
+          <h5>Acerca de</h5>
+          <p>
+            Este sitio permite ver la lista de acciones realizadas por los moderadores de
+            <a href="https://reddit.com/r/chile" target="_blank">/r/chile</a>. Actualmente
+            es desarrollado por <a href="https://reddit.com/user/makzk">/u/makzk</a>.
+          </p>
+          <p>
+            Puedes revisar el código del sitio web <a href="https://github.com/rchile/rchile.xyz/tree/master/modlog" target="_blank">aquí</a>
+            y el repositorio de la API <a href="https://github.com/rchile/modlog-api" target="_blank">aquí</a>.
+          </p>
+          <p>
+            Tanto la lógica del sitio web como la API están bajo la <a href="https://github.com/rchile/rchile.xyz/blob/master/modlog/LICENSE.txt" target="_blank">licencia MIT</a>, mientras que el diseño está bajo la licencia
+            <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CreativeCommons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)</a>.
+          </p>
+          <p>
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a>
+          </p>
         </div>
       </div>
 
