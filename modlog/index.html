@@ -25,7 +25,7 @@
   <div class="container">
     <div class="page-content" id="app">
 
-      <div v-for="action in modActions">
+      <div v-for="action in logEntries">
         <div class="card">
 
           <div class="card-content row">
@@ -61,14 +61,14 @@
           Cargando...
         </div>
       </div>
-      <div class="card" v-if="!loading && modActions.length == 0">
+      <div class="card" v-if="!loading && logEntries.length == 0">
         <div class="card-content center-align">
           No hay acciones de moderador.
         </div>
       </div>
       <div class="card" v-if="error">
         <div class="card-content center-align">
-          <span v-if="modActions.length == 0">
+          <span v-if="logEntries.length == 0">
             No fue posible cargar las acciones de moderador.
           </span>
           <span v-else>
@@ -80,7 +80,7 @@
       <div id="entry-modal" class="modal">
         <div class="modal-content">
           <div style="font-size: 24px;">Datos en bruto de la acción</div>
-          <p v-if="!!selectedAction"><pre style="overflow: auto;">{{selectedAction ? selectedAction.entry : ''}}</pre></p>
+          <p v-if="!!selectedEntry"><pre style="overflow: auto;">{{selectedEntry ? selectedEntry.entry : ''}}</pre></p>
         </div>
       </div>
 

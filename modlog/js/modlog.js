@@ -5,11 +5,11 @@
     data: {
       loading: true,
       error: false,
-      modActions: [],
-      selectedAction: null,
+      logEntries: [],
+      selectedEntry: null,
       details: function(action, e) {
         if (e) e.preventDefault();
-        app.selectedAction = action;
+        app.selectedEntry = action;
         M.Modal.getInstance(d.querySelector('#entry-modal')).open();
       }
     },
@@ -35,7 +35,7 @@
       allowLoad = true;
 
       let result = entriesFilter(resp.data);
-      app.modActions = app.modActions.concat(result);
+      app.logEntries = app.logEntries.concat(result);
     }).catch(function(error) {
       app.loading = false;
       app.error = true;
@@ -69,15 +69,22 @@
     }, []);
   }
 
+  // Load more entries when the bottom is reached
   w.addScrollListener(scrollY => {
-    let nModActions = app.modActions.length;
-    if (app.loading || nModActions === 0 || !allowLoad) {
+    let nLogEntries = app.logEntries.length;
+
+    // Don't load entries if it's already loading, when no entries
+    // where loaded (because something happened), or the app locked
+    // loading entries
+    if (app.loading || nLogEntries === 0 || !allowLoad) {
       return;
     }
 
+    // Point where the entries load is triggered
     let trigger = (scrollY + (w.innerHeight * 1.7)) > docHeight();
-    if (trigger && nModActions > 0) {
-      loadEntries(app.modActions[nModActions - 1].entry.id);
+    if (trigger && nLogEntries > 0) {
+      // Load entries after the last loaded entry
+      loadEntries(app.logEntries[nLogEntries - 1].entry.id);
     }
   });
 

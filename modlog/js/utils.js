@@ -1,11 +1,19 @@
-// https://stackoverflow.com/a/822486
+/**
+ * Strips HTML tags from a string
+ * https://stackoverflow.com/a/822486
+ * @return {number} The string without HTML tags.
+ */
 function strip(html) {
   var tmp = document.createElement("DIV");
   tmp.innerHTML = html;
   return tmp.textContent || tmp.innerText || "";
 }
 
-// https://stackoverflow.com/a/1147768
+/**
+ * Get real document height
+ * https://stackoverflow.com/a/1147768
+ * @return {number} The document height in pixels.
+ */
 function docHeight() {
   let body = document.body,
       html = document.documentElement;
@@ -14,16 +22,17 @@ function docHeight() {
                    html.clientHeight, html.scrollHeight, html.offsetHeight );
 }
 
+// Implements performance-aware onscroll event
 (function(w) {
   let lastScroll = 0;
   let ticking = false;
-  let onScrollCallbacks = [];
+  let callbacks = [];
 
   w.addEventListener('scroll', function(e) {
     lastScroll = w.scrollY;
     if (!ticking) {
       w.requestAnimationFrame(function() {
-        onScrollCallbacks.forEach(x => x(lastScroll));
+        callbacks.forEach(x => x(lastScroll));
         ticking = false;
       });
     }
@@ -31,7 +40,7 @@ function docHeight() {
   });
 
   w.addScrollListener = function(f) {
-    onScrollCallbacks.push(f);
+    callbacks.push(f);
     return f;
   };
 })(window);
