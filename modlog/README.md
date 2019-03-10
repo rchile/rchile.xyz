@@ -10,7 +10,7 @@ It displays the list of entries from the modlog.
 * Entry permalinks
 * Mod login to add notes (also an API task)
 * Data analysis
-* Update entries (also an API task)
+* Update entries list (also an API task)
 
 ### License
 
