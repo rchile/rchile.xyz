@@ -1,4 +1,6 @@
 (function(d, w) {
+  'use strict';
+  
   let allowLoad = true;
   let app = new Vue({
     el: '#app',
@@ -44,11 +46,14 @@
   }
 
   /**
-   * Filters modlog entries. Currently, it merges the distinguish and sticky actions.
+   * Filter and parse modlog entries to shape them better to the app.
    * @param  {array} entries Entries fetched from the API.
    * @return {array}         Filtered entries.
    */
   function entriesFilter(entries) {
+    let twoTypesList = ['distinguish', 'sticky', 'unsticky', 'stickydistinguish',
+                        'spamlink', 'unignorereports', 'ignorereports'];
+
     return entries.reduce((final, curr) => {
       let nEntries = final.length;
       if (nEntries > 0) {
@@ -62,6 +67,11 @@
           final[nEntries-1] = new ModAction(last);
           return final;
         }
+      }
+
+      // Distinguish between actions made with posts and comments
+      if (twoTypesList.indexOf(curr.action) > -1) {
+        curr.action += !!curr.target_title ? 'post' : 'comment';
       }
 
       final.push(new ModAction(curr));

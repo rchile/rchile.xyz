@@ -32,4 +32,6 @@ html, body {
   white-space: normal;
   margin: 0;
   word-wrap: anywhere;
+  max-height: 7rem;
+  overflow-y: auto;
 }
