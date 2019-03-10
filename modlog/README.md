@@ -9,6 +9,7 @@ It displays the list of entries from the modlog.
 * Single entry support (load single entries from API)
 * Entry permalinks
 * Mod login to add notes (also an API task)
+* Data analysis
 
 ### License
 
