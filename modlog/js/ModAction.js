@@ -62,10 +62,11 @@
           // Join sticky and distinguish entries
           let last = final[nEntries-1].entry;
           if (last.mod == curr.mod && last.target_fullname == curr.target_fullname && 
-              ((last.action == 'distinguish' && curr.action == 'sticky') || 
-                (last.action == 'sticky' && curr.action == 'distinguish')
+              ((last.action.startsWith('distinguish') && curr.action.startsWith('sticky')) || 
+                (last.action.startsWith('sticky') && curr.action.startsWith('distinguish'))
               )) {
             last.action = 'stickydistinguish';
+            last.action += !!last.target_title ? 'post' : 'comment';
             final[nEntries-1] = new ModAction(last);
             return final;
           }
