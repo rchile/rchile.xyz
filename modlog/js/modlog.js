@@ -36,47 +36,13 @@
       app.loading = false;
       allowLoad = true;
 
-      let result = entriesFilter(resp.data);
+      let result = ModAction.filterEntries(resp.data);
       app.logEntries = app.logEntries.concat(result);
     }).catch(function(error) {
       app.loading = false;
       app.error = true;
       console.error(error);
     });
-  }
-
-  /**
-   * Filter and parse modlog entries to shape them better to the app.
-   * @param  {array} entries Entries fetched from the API.
-   * @return {array}         Filtered entries.
-   */
-  function entriesFilter(entries) {
-    let twoTypesList = ['distinguish', 'sticky', 'unsticky', 'stickydistinguish',
-                        'spamlink', 'unignorereports', 'ignorereports'];
-
-    return entries.reduce((final, curr) => {
-      let nEntries = final.length;
-      if (nEntries > 0) {
-        // Join sticky and distinguish entries
-        let last = final[nEntries-1].entry;
-        if (last.mod == curr.mod && last.target_fullname == curr.target_fullname && 
-            ((last.action == 'distinguish' && curr.action == 'sticky') || 
-              (last.action == 'sticky' && curr.action == 'distinguish')
-            )) {
-          last.action = 'stickydistinguish';
-          final[nEntries-1] = new ModAction(last);
-          return final;
-        }
-      }
-
-      // Distinguish between actions made with posts and comments
-      if (twoTypesList.indexOf(curr.action) > -1) {
-        curr.action += !!curr.target_title ? 'post' : 'comment';
-      }
-
-      final.push(new ModAction(curr));
-      return final;
-    }, []);
   }
 
   // Load more entries when the bottom is reached

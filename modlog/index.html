@@ -56,16 +56,6 @@
         </div> <!-- /.card -->
       </div> <!-- /for -->
 
-      <div class="card" v-if="loading">
-        <div class="card-content center-align">
-          Cargando...
-        </div>
-      </div>
-      <div class="card" v-if="!loading && logEntries.length == 0">
-        <div class="card-content center-align">
-          No hay acciones de moderador.
-        </div>
-      </div>
       <div class="card" v-if="error">
         <div class="card-content center-align">
           <span v-if="logEntries.length == 0">
@@ -74,6 +64,29 @@
           <span v-else>
             No fue posible cargar más acciones de moderador.
           </span>
+        </div>
+      </div>
+      <div v-else>
+        <div class="card" v-if="loading">
+          <div class="card-content center-align">
+            <p>Cargando...<br><br></p>
+            <div class="preloader-wrapper active">
+              <div class="spinner-layer spinner-red-only">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card" v-else-if="logEntries.length == 0">
+          <div class="card-content center-align">
+            No hay acciones de moderador.
+          </div>
         </div>
       </div>
 

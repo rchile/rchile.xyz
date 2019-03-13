@@ -11,21 +11,12 @@
       this.targetPermalink = 'https://reddit.com' + this.entry.target_permalink;
       this.date = ModAction._date(this.entry.created_utc); // UTC ISO date string
 
+      this.description = '';
       this.details = ModAction._fPostData(this.entry);
       this.content = this.entry.target_body;
       this.icon = iconMap[action] || 'insert_emoticon';
 
       switch(this.entry.action) {
-        case 'removelink':
-          this.description = this.entry.mod === 'AutoModerator' ?
-            'Publicación automáticamente eliminada.' : 
-            'Publicación eliminada.';
-          break;
-        case 'unbanuser':
-          if (this.entry.description === 'was temporary') {
-            this.description = `Fin del ban temporal de {autor}.`;
-          }
-          break;
         case 'banuser':
           let banTime = this.entry.details === 'permanent' ? 'permanente' : this.entry.details;
           this.description = `Usuario(a) ${authorLink} baneado(a).`;
@@ -36,13 +27,20 @@
             this.description = 'Widget del sidebar editado.';
           }
           break;
+        case 'wikirevise':
+          this.details = this.entry.details;
+          break;
+        case 'wikipermlevel':
+          this.details = this.entry.description || '(sin detalles)';
+          break;
       }
 
       // Get the default description for the action and format it
       let vars = { 'author': authorLink };
-      this.description = 'Acción: ' + action;
-      if (descriptionMap[action]) {
+      if (!this.description && descriptionMap[action]) {
         this.description = descriptionMap[action].format(vars);
+      } else {
+        this.description = 'Acción: ' + action;
       }
     }
 
@@ -50,6 +48,54 @@
     dateAgo() {
       return timeago().format(this.entry.created_utc*1000, 'es');
     }
+
+
+  /**
+   * Filter and parse modlog entries to shape them better to the app.
+   * It can create virtual action types (non standard) to simplify
+   * application logic.
+   * @param  {array} entries Entries fetched from the API.
+   * @return {array}         Filtered entries.
+   */
+  static filterEntries(entries) {
+    let twoTypesList = ['distinguish', 'sticky', 'unsticky', 'stickydistinguish',
+                        'spamlink', 'unignorereports', 'ignorereports'];
+    let autoTypesList = ['removelink'];
+
+    return entries.reduce((final, curr) => {
+      let nEntries = final.length;
+      if (nEntries > 0) {
+        // Join sticky and distinguish entries
+        let last = final[nEntries-1].entry;
+        if (last.mod == curr.mod && last.target_fullname == curr.target_fullname && 
+            ((last.action == 'distinguish' && curr.action == 'sticky') || 
+              (last.action == 'sticky' && curr.action == 'distinguish')
+            )) {
+          last.action = 'stickydistinguish';
+          final[nEntries-1] = new ModAction(last);
+          return final;
+        }
+      }
+
+      // Distinguish between actions made with posts and comments
+      if (twoTypesList.indexOf(curr.action) > -1) {
+        curr.action += !!curr.target_title ? 'post' : 'comment';
+      }
+
+      // Distinguish AutoModerator actions
+      if (autoTypesList.indexOf(curr.action) > -1 && curr.mod === 'AutoModerator') {
+        curr.action += 'auto';
+      }
+
+      // Special action type for end of temporal ban
+      if (curr.action === 'unbanuser' && curr.description === 'was temporary') {
+        curr.action = 'tempbanend';
+      }
+
+      final.push(new ModAction(curr));
+      return final;
+    }, []);
+  }
 
     // Generates a UTC ISO string from a date
     static _date(theDate) {
@@ -80,19 +126,45 @@
     }
   }
 
+  // Default icon for every action type (including virtual ones)
   let iconMap = {
-    'removelink': 'delete', 'editflair': 'rate_review', 'unspoiler': 'visibility', 'distinguishpost': 'star',
-    'distinguishcomment': 'star', 'stickypost': 'pin_drop', 'stickycomment': 'location_on', 'unstickypost': 'location_off',
-    'unstickycomment': 'location_off', 'stickydistinguishpost': 'folder_special', 'stickydistinguishcomment': 'local_activity',
-    'approvelink': 'done_all', 'approvecomment': 'add_comment', 'removecomment': 'speaker_notes_off',
-    'spamcomment': 'report', 'unbanuser': 'how_to_reg', 'setsuggestedsort': 'sort', 'spamlinkpost': 'delete_sweep',
-    'spamlinkcomment': 'delete_outline', 'lock': 'lock', 'banuser': 'gavel', 'marknsfw': 'airline_seat_recline_extra',
-    'unspoiler': 'visibility', 'unignorereportspost': 'assignment_turned_in', 'unignorereportscomment': 'assignment_turned_in',
-    'ignorereportspost': 'assignment_returned', 'ignorereportscomment': 'report_off', 'community_widgets': 'border_color'
+    'approvecomment': 'add_comment',
+    'approvelink': 'done_all',
+    'banuser': 'gavel',
+    'community_widgets': 'border_color',
+    'distinguishcomment': 'star',
+    'distinguishpost': 'star',
+    'editflair': 'rate_review',
+    'ignorereportscomment': 'report_off',
+    'ignorereportspost': 'assignment_returned',
+    'lock': 'lock',
+    'marknsfw': 'airline_seat_recline_extra',
+    'removecomment': 'speaker_notes_off',
+    'removelink': 'delete',
+    'removelinkauto': 'delete',
+    'setsuggestedsort': 'sort',
+    'spamcomment': 'report',
+    'spamlinkcomment': 'delete_outline',
+    'spamlinkpost': 'delete_sweep',
+    'stickycomment': 'location_on',
+    'stickydistinguishcomment': 'local_activity',
+    'stickydistinguishpost': 'folder_special',
+    'stickypost': 'pin_drop',
+    'tempbanend': 'how_to_reg',
+    'unbanuser': 'how_to_reg',
+    'unignorereportscomment': 'assignment_turned_in',
+    'unignorereportspost': 'assignment_turned_in',
+    'unspoiler': 'visibility',
+    'unstickycomment': 'location_off',
+    'unstickypost': 'location_off',
+    'wikipermlevel': 'perm_contact_calendar',
+    'wikirevise': 'description'
   };
 
+  // Default descriptions
   let descriptionMap = {
     'removelink': 'Publicación eliminada.',
+    'removelinkauto': 'Publicación automáticamente eliminada.',
     'editflair': 'Etiqueta de publicación editada.',
     'unspoiler': 'Publicación desmarcada como spoiler.',
     'distinguishpost': 'Publicación distinguida.',
@@ -117,7 +189,10 @@
     'unbanuser': 'Usuario(a) {author} desbaneado(a).',
     'spamlinkcomment': 'Comentario de {author} eliminado por spam.',
     'unignorereportscomment': 'Ignorado de reportes del comentario de {author} revertido.',
-    'ignorereportscomment': 'Reportes del comentario de {author} ignorados.'
+    'ignorereportscomment': 'Reportes del comentario de {author} ignorados.',
+    'tempbanend': 'Fin del ban temporal de {author}.',
+    'wikirevise': 'Página de la wiki modificada',
+    'wikipermlevel': 'Nivel de permisos de wiki modificado'
   };
 
   w.ModAction = ModAction;
