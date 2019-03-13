@@ -30,15 +30,14 @@
 
           <div class="card-content row">
             <div class="right">
-              <span v-bind:title='action.date'>
-                <i class="material-icons">access_time</i>
-                {{ action.dateAgo() }}
+              <span :title='action.date'>
+                <i class="material-icons">access_time</i> {{ action | timeago }}
               </span> |
-              <a v-bind:href="action.modURL" target="_blank">{{ action.entry.mod }}</a> |
-              <a v-if="action.entry.target_permalink" v-bind:href="action.targetPermalink" target="_blank">
+              <a :href="action.modURL" target="_blank">{{ action.entry.mod }}</a> |
+              <a v-if="action.entry.target_permalink" :href="action.targetPermalink" target="_blank">
                 <i class="material-icons">open_in_new</i>
               </a>
-              <a class="waves-effect waves-light" v-on:click="details(action, $event)" href="#">
+              <a class="waves-effect waves-light" @click.prevent="details(action)" href="#">
                 <i class="material-icons">code</i>
               </a>
             </div>
@@ -48,7 +47,7 @@
               <div class="col s12 m11">
                 <p v-if="action.description" style="font-weight: bold" v-html="action.description"></p>
                 <p v-if="action.details" v-html="action.details"></p>
-                <pre class="target-body" v-if="action.content">{{ action.content }}</pre>
+                <pre class="target-body" v-if="action.content" v-html="md(action.content)"></pre>
               </div>
             </div>
           </div> <!-- /.card-content -->
@@ -117,17 +116,20 @@
             <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a>
           </p>
         </div>
-      </div>
+      </div> <!-- /#about-modal -->
 
     </div> <!-- /#app.card-content -->
   </div> <!-- /.container -->
 
-
+  <!-- External libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/3.0.2/timeago.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/3.0.2/timeago.locales.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.2/markdown-it.min.js"></script>
 
+  <!-- App-specific scripts -->
   <script src="js/utils.js"></script>
   <script src="js/ModAction.js"></script>
   <script src="js/modlog.js"></script>

@@ -29,11 +29,11 @@ function docHeight() {
  */
 String.prototype.format = function () {
     'use strict';
-    var str = this.toString();
+    let str = this.toString();
     if (arguments.length) {
-        var t = typeof arguments[0];
-        var key;
-        var args = ('string' === t || 'number' === t) ?
+        let t = typeof arguments[0];
+        let key;
+        let args = ('string' === t || 'number' === t) ?
             Array.prototype.slice.call(arguments)
             : arguments[0];
 
@@ -44,9 +44,32 @@ String.prototype.format = function () {
 
     return str;
 };
-
-// Implements performance-aware onscroll event
 (function(w) {
+  // Create a markdown-it instance and make it to add 'target="_blank"' to every link
+  // https://github.com/markdown-it/markdown-it/blob/master/docs/architecture.md#renderer
+  let md = markdownit();
+  let defaultRender = md.renderer.rules.link_open || function(tokens, idx, options, env, self) {
+    return self.renderToken(tokens, idx, options);
+  };
+
+  md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+    // If you are sure other plugins can't add `target` - drop check below
+    let aIndex = tokens[idx].attrIndex('target');
+
+    if (aIndex < 0) {
+      tokens[idx].attrPush(['target', '_blank']); // add new attribute
+    } else {
+      tokens[idx].attrs[aIndex][1] = '_blank';    // replace value of existing attr
+    }
+
+    // pass token to default renderer.
+    return defaultRender(tokens, idx, options, env, self);
+  };
+
+  w.md = md;
+
+  // Implements performance-aware onscroll event
+  // https://developer.mozilla.org/en-US/docs/Web/Events/scroll
   let lastScroll = 0;
   let ticking = false;
   let callbacks = [];

@@ -1,7 +1,8 @@
 (function(d, w) {
   'use strict';
-  
   let allowLoad = true;
+  let timeagoIns = timeago();
+
   let app = new Vue({
     el: '#app',
     data: {
@@ -9,10 +10,21 @@
       error: false,
       logEntries: [],
       selectedEntry: null,
-      details: function(action, e) {
-        if (e) e.preventDefault();
+      details: function(action) {
         app.selectedEntry = action;
         M.Modal.getInstance(d.querySelector('#entry-modal')).open();
+      },
+      md: function (value) {
+        return md.render(value);
+      }
+    },
+    filters: {
+      timeago: function (value) {
+        console.log(value);
+        return timeagoIns.format(value.entry.created_utc*1000, 'es');
+      },
+      md: function (value) {
+        return md.render(value);
       }
     },
     updated: function(){ this.$nextTick(() => {
