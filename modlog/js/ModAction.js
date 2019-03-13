@@ -16,10 +16,10 @@
       this.content = this.entry.target_body;
       this.icon = iconMap[action] || 'insert_emoticon';
 
+      // Special descriptions for some actions
       switch(this.entry.action) {
         case 'banuser':
           let banTime = this.entry.details === 'permanent' ? 'permanente' : this.entry.details;
-          this.description = `Usuario(a) ${authorLink} baneado(a).`;
           this.details = `Razón: ${this.entry.description || '<em>(sin razón)</em>'}. Período: ${banTime}.`;
           break;
         case 'community_widgets':
@@ -37,9 +37,9 @@
 
       // Get the default description for the action and format it
       let vars = { 'author': authorLink };
-      if (!this.description && descriptionMap[action]) {
+      if (descriptionMap[action]) {
         this.description = descriptionMap[action].format(vars);
-      } else {
+      } else if(!this.description) {
         this.description = 'Acción: ' + action;
       }
     }
@@ -163,36 +163,36 @@
 
   // Default descriptions
   let descriptionMap = {
-    'removelink': 'Publicación eliminada.',
-    'removelinkauto': 'Publicación automáticamente eliminada.',
-    'editflair': 'Etiqueta de publicación editada.',
-    'unspoiler': 'Publicación desmarcada como spoiler.',
-    'distinguishpost': 'Publicación distinguida.',
-    'distinguishcomment': 'Comentario de moderador distinguido.',
-    'stickypost': 'Publicación fijada.',
-    'stickycomment': 'Comentario de moderador fijado.',
-    'unstickypost': 'Fijado de publicación quitado.',
-    'stickydistinguishcomment': 'Publicación fijada y distinguida.',
-    'stickydistinguishcomment': 'Comentario de moderador fijado y distinguido.',
+    'approvecomment': 'Comentario de {author} aprobado.',
     'approvelink': 'Publicación aprobada.',
-    'setsuggestedsort': 'Se cambió el orden predeterminado de una publicación.',
-    'spamlinkpost': 'Publicación eliminada por spam.',
+    'banuser': 'Usuario(a) {author} baneado(a).',
+    'distinguishcomment': 'Comentario de moderador distinguido.',
+    'distinguishpost': 'Publicación distinguida.',
+    'editflair': 'Etiqueta de publicación editada.',
+    'ignorereportscomment': 'Reportes del comentario de {author} ignorados.',
+    'ignorereportspost': 'Reportes de publicación ignorados.',
     'lock': 'Comentarios de publicación bloqueados.',
     'marknsfw': 'Publicación marcada como NSFW.',
-    'unspoiler': 'Publicación desmarcada como spoiler.',
-    'unignorereportspost': 'Ignorado de reportes de publicación revertido.',
-    'ignorereportspost': 'Reportes de publicación ignorados.',
-    'unstickycomment': 'Fijado de comentario {author} quitado.',
-    'approvecomment': 'Comentario de {author} aprobado.',
     'removecomment': 'Comentario de {author} eliminado.',
+    'removelink': 'Publicación eliminada.',
+    'removelinkauto': 'Publicación automáticamente eliminada.',
+    'setsuggestedsort': 'Se cambió el orden predeterminado de una publicación.',
     'spamcomment': 'Comentario de {author} eliminado como spam.',
-    'unbanuser': 'Usuario(a) {author} desbaneado(a).',
     'spamlinkcomment': 'Comentario de {author} eliminado por spam.',
-    'unignorereportscomment': 'Ignorado de reportes del comentario de {author} revertido.',
-    'ignorereportscomment': 'Reportes del comentario de {author} ignorados.',
+    'spamlinkpost': 'Publicación eliminada por spam.',
+    'stickycomment': 'Comentario de moderador fijado.',
+    'stickydistinguishcomment': 'Comentario de moderador fijado y distinguido.',
+    'stickydistinguishpost': 'Publicación fijada y distinguida.',
+    'stickypost': 'Publicación fijada.',
     'tempbanend': 'Fin del ban temporal de {author}.',
+    'unbanuser': 'Usuario(a) {author} desbaneado(a).',
+    'unignorereportscomment': 'Ignorado de reportes del comentario de {author} revertido.',
+    'unignorereportspost': 'Ignorado de reportes de publicación revertido.',
+    'unspoiler': 'Publicación desmarcada como spoiler.',
+    'unstickycomment': 'Fijado de comentario {author} quitado.',
+    'unstickypost': 'Fijado de publicación quitado.',
+    'wikipermlevel': 'Nivel de permisos de wiki modificado',
     'wikirevise': 'Página de la wiki modificada',
-    'wikipermlevel': 'Nivel de permisos de wiki modificado'
   };
 
   w.ModAction = ModAction;
