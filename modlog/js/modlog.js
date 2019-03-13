@@ -16,11 +16,20 @@
       },
       md: function (value) {
         return md.render(value);
+      },
+      dateISOUTC: function(date) {
+        let tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        return (new Date(date*1000 - tzoffset)).toISOString().slice(0, -1);
+      },
+      modURL: function(user) {
+        return 'https://reddit.com/user/' + user;
+      },
+      targetPermalink: function(entry) {
+        return 'https://reddit.com' + entry.target_permalink;
       }
     },
     filters: {
       timeago: function (value) {
-        console.log(value);
         return timeagoIns.format(value.entry.created_utc*1000, 'es');
       },
       md: function (value) {

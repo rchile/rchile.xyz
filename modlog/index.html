@@ -26,15 +26,15 @@
     <div class="page-content" id="app">
 
       <div v-for="action in logEntries">
-        <div class="card">
 
+        <div class="card">
           <div class="card-content row">
             <div class="right">
-              <span :title='action.date'>
+              <span :title="dateISOUTC(action.entry.created_utc)">
                 <i class="material-icons">access_time</i> {{ action | timeago }}
               </span> |
-              <a :href="action.modURL" target="_blank">{{ action.entry.mod }}</a> |
-              <a v-if="action.entry.target_permalink" :href="action.targetPermalink" target="_blank">
+              <a :href="modURL(action.entry.mod)" target="_blank">{{ action.entry.mod }}</a> |
+              <a v-if="action.entry.target_permalink" :href="targetPermalink(action.entry)" target="_blank">
                 <i class="material-icons">open_in_new</i>
               </a>
               <a class="waves-effect waves-light" @click.prevent="details(action)" href="#">
@@ -51,8 +51,8 @@
               </div>
             </div>
           </div> <!-- /.card-content -->
-
         </div> <!-- /.card -->
+
       </div> <!-- /for -->
 
       <div class="card" v-if="error">
@@ -122,12 +122,12 @@
   </div> <!-- /.container -->
 
   <!-- External libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.2/markdown-it.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/3.0.2/timeago.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/3.0.2/timeago.locales.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.2/markdown-it.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.min.js"></script>
 
   <!-- App-specific scripts -->
   <script src="js/utils.js"></script>

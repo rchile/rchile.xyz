@@ -7,10 +7,6 @@
       let action = this.entry.action; // shorthand
       let authorLink = ModAction._userLink(this.entry.target_author); // html link to author
 
-      this.modURL = 'https://reddit.com/user/' + this.entry.mod;
-      this.targetPermalink = 'https://reddit.com' + this.entry.target_permalink;
-      this.date = ModAction._date(this.entry.created_utc); // UTC ISO date string
-
       this.description = '';
       this.details = ModAction._fPostData(this.entry);
       this.content = this.entry.target_body;
