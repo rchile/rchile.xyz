@@ -46,7 +46,7 @@
   });
 
   function loadEntries(after) {
-    let endpoint = 'https://modlog2.rchile.xyz/entries';
+    let endpoint = 'https://modlog3.rchile.xyz/entries';
     if (after) {
       endpoint += '/after/' + after;
     }
