@@ -37,8 +37,8 @@
               <a v-if="action.entry.target_permalink" :href="targetPermalink(action.entry)" target="_blank">
                 <i class="material-icons">open_in_new</i>
               </a>
-              <a class="waves-effect waves-light" @click.prevent="details(action)" href="#">
-                <i class="material-icons">code</i>
+              <a class="waves-effect waves-light" @click.prevent="details(action)" :href="'#'+action.entry.id">
+                <i class="material-icons">speaker_notes</i>
               </a>
             </div>
 
@@ -90,9 +90,42 @@
       </div>
 
       <div id="entry-modal" class="modal">
-        <div class="modal-content">
-          <div style="font-size: 24px;">Datos en bruto de la acción</div>
-          <p v-if="!!selectedEntry"><pre style="overflow: auto;">{{selectedEntry ? selectedEntry.entry : ''}}</pre></p>
+        <div class="modal-content" v-if="selectedLoading">
+          <p>Cargando entrada...<br><br></p>
+          <div class="preloader-wrapper active">
+            <div class="spinner-layer spinner-red-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-content" v-if="selectedEntry">
+          <div style="font-size: 24px">Detalles de la acción</div>
+          <div style="float: right">
+            <a v-if="selectedEntry.entry.target_permalink" :href="targetPermalink(selectedEntry.entry)" target="_blank">
+              <i class="material-icons">open_in_new</i>
+            </a>
+            <a class="waves-effect waves-light" @click.prevent="console.log(selectedEntry.entry)" href="#" 
+              title="Enviar los datos en bruto a la consola de desarrollo">
+              <i class="material-icons">code</i>
+            </a>
+          </div>
+          <div style="margin-top: 12px">
+            <i class="material-icons">{{ selectedEntry.icon }}</i>
+            <span v-html="selectedEntry.description" style="font-weight: bold"></span>
+            Por <a :href="modURL(selectedEntry.entry.mod)" target="_blank">/u/{{ selectedEntry.entry.mod }}</a>.
+            <span :title="dateISOUTC(selectedEntry.entry.created_utc)">
+              {{ selectedEntry | timeago | capitalize }}.
+            </span>
+          </div>
+          <div v-if="selectedEntry.details" v-html="selectedEntry.details" style="padding-left: 37px"></div>
+          <div class="target-body" v-if="selectedEntry.content" v-html="md(selectedEntry.content)"></div>
         </div>
       </div>
 

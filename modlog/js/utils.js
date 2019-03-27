@@ -22,6 +22,15 @@ function docHeight() {
                    html.clientHeight, html.scrollHeight, html.offsetHeight );
 }
 
+const patModEntryId = /^ModAction_?[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/;
+/**
+ * Verifies if a string is a valid ModAction ID
+ * @return {boolean} The result of the verification.
+ */
+function isModEntryId(id) {
+  return patModEntryId.test(id);
+}
+
 /**
  * Replaces placeholders in a string.
  * https://stackoverflow.com/a/18234317

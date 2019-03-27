@@ -35,3 +35,43 @@ html, body {
   max-height: 7rem;
   overflow-y: auto;
 }
+
+.modal-content .target-body {
+  line-height: 20px;
+  background: #ddd;
+  padding: .6rem;
+  font-size: 14px;
+  overflow: auto;
+  margin-top: 1rem;
+}
+
+.modal-content .target-body p {
+  margin: 12px 0 12px 0;
+}
+
+.modal-content .target-body p:first-child {
+  margin-top: 0;
+}
+
+.modal-content .target-body p:last-child {
+  margin-bottom: 0;
+}
+
+.modal-content .target-body blockquote {
+  margin: 5px 0 5px 0;
+  padding-left: 1rem;
+  border-left: 2px solid #999;
+}
+
+.modal-content .target-body blockquote:first-child {
+  margin-top: 0px;
+}
+
+.modal-content .target-body blockquote:last-child {
+  margin-bottom: 0px;
+}
+
+.modal-content .material-icons:first-child {
+  vertical-align: top;
+  padding-right: 10px;
+}

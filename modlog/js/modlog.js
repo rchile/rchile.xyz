@@ -2,17 +2,23 @@
   'use strict';
   let allowLoad = true;
   let timeagoIns = timeago();
+  let API = 'https://modlog3.rchile.xyz';
 
   let app = new Vue({
     el: '#app',
     data: {
       loading: true,
+      selectedLoading: false,
       error: false,
       logEntries: [],
       selectedEntry: null,
       details: function(action) {
+        w.location.hash = action.entry.id;
         app.selectedEntry = action;
-        M.Modal.getInstance(d.querySelector('#entry-modal')).open();
+
+        let modal = M.Modal.getInstance(d.querySelector('#entry-modal'));
+        if (!modal.isOpen)
+          modal.open();
       },
       md: function (value) {
         return md.render(value);
@@ -34,6 +40,9 @@
       },
       md: function (value) {
         return md.render(value);
+      },
+      capitalize: function(value) {
+        return value.charAt(0).toUpperCase() + value.slice(1);
       }
     },
     updated: function(){ this.$nextTick(() => {
@@ -42,11 +51,15 @@
     mounted: function () {
       d.querySelector("#app").style.visibility = 'visible';
       M.Modal.init(d.querySelectorAll('.modal'));
+
+      M.Modal.getInstance(d.querySelector('#entry-modal')).options.onCloseStart = function() {
+        history.pushState("", d.title, w.location.pathname + w.location.search);
+      };
     }
   });
 
   function loadEntries(after) {
-    let endpoint = 'https://modlog3.rchile.xyz/entries';
+    let endpoint = API + '/entries';
     if (after) {
       endpoint += '/after/' + after;
     }
@@ -59,11 +72,41 @@
 
       let result = ModAction.filterEntries(resp.data);
       app.logEntries = app.logEntries.concat(result);
+
+      if (!w.location.hash !== '') {
+        loadHashEntry();
+      }
     }).catch(function(error) {
       app.loading = false;
       app.error = true;
       console.error(error);
     });
+  }
+
+  function loadHashEntry() {
+    let hashId = w.location.hash.substr(1);
+    if (!isModEntryId(hashId)) {
+      return;
+    }
+
+    let selected = app.logEntries.find(x => x.entry.id === hashId);
+    if (!selected) {
+      app.selectedLoading = true;
+      axios.get(API + '/entry/' + hashId).then(function(data) {
+        app.selectedLoading = false;
+        openHashEntry(new ModAction(data.data));
+      });
+    } else {
+      openHashEntry(selected)
+    }
+  }
+
+  function openHashEntry(entry) {
+    let modal = M.Modal.getInstance(d.querySelector('#entry-modal'));
+    if (!modal.isOpen && !app.selectedEntry || entry.entry.id !== app.selectedEntry.entry.id) {
+      app.selectedEntry = entry;
+      modal.open();
+    }
   }
 
   // Load more entries when the bottom is reached
