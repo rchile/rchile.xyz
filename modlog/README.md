@@ -5,9 +5,9 @@ It displays the list of entries from the modlog.
 
 ### TO-DO
 
-* Better way to handle actions (entry types)
-* Single entry support (load single entries from API)
-* Entry permalinks
+* ~~Better way to handle actions (entry types)~~
+* ~~Single entry support (load single entries from API)~~
+* ~~Entry permalinks~~
 * Mod login to add notes (also an API task)
 * Data analysis
 * Update entries list (also an API task)
