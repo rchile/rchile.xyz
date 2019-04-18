@@ -2,8 +2,7 @@
   'use strict';
   let allowLoad = true;
   let timeagoIns = timeago();
-  //let API = 'https://modlog.rchile.xyz';
-  let API = 'http://localhost:5000';
+  let API = 'https://modlog.rchile.xyz';
 
   let app = new Vue({
     el: '#app',
