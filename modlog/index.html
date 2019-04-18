@@ -45,9 +45,15 @@
             <div>
               <div class="col s12 m1"><i class="material-icons">{{ action.icon }}</i></div>
               <div class="col s12 m11">
-                <p v-if="action.description" style="font-weight: bold" v-html="action.description"></p>
-                <p v-if="action.details" v-html="action.details"></p>
-                <pre class="target-body" v-if="action.content" v-html="md(action.content)"></pre>
+                <div v-if="action.entry.hidden">
+                  <p style="font-weight: bold">Acción de moderador oculta.</p>
+                  <p v-if="action.entry.hidden_reason">Razón: {{ action.entry.hidden_reason }}</p>
+                </div>
+                <div v-else>
+                  <p v-if="action.description" style="font-weight: bold" v-html="action.description"></p>
+                  <p v-if="action.details" v-html="action.details"></p>
+                  <pre class="target-body" v-if="action.content" v-html="md(action.content)"></pre>
+                </div>
               </div>
             </div>
           </div> <!-- /.card-content -->
@@ -118,14 +124,22 @@
           </div>
           <div style="margin-top: 12px">
             <i class="material-icons">{{ selectedEntry.icon }}</i>
-            <span v-html="selectedEntry.description" style="font-weight: bold"></span>
+            <span v-if="!selectedEntry.entry.hidden" v-html="selectedEntry.description" style="font-weight: bold"></span>
             Por <a :href="modURL(selectedEntry.entry.mod)" target="_blank">/u/{{ selectedEntry.entry.mod }}</a>.
             <span :title="dateISOUTC(selectedEntry.entry.created_utc)">
               {{ selectedEntry | timeago | capitalize }}.
             </span>
           </div>
-          <div v-if="selectedEntry.details" v-html="selectedEntry.details" style="padding-left: 37px"></div>
-          <div class="target-body" v-if="selectedEntry.content" v-html="md(selectedEntry.content)"></div>
+          <div v-if="selectedEntry.entry.hidden">
+            <p>
+              <span style="font-weight: bold">Acción de moderador oculta.</span>
+              <span v-if="selectedEntry.entry.hidden_reason">Razón: {{ selectedEntry.entry.hidden_reason }}</span>
+            </p>
+          </div>
+          <div v-else>
+            <div v-if="selectedEntry.details" v-html="selectedEntry.details" style="padding-left: 37px"></div>
+            <div class="target-body" v-if="selectedEntry.content" v-html="md(selectedEntry.content)"></div>
+          </div>
         </div>
       </div>
 
