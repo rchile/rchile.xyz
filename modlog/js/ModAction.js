@@ -159,7 +159,7 @@
 
   // Default descriptions
   let descriptionMap = {
-    'acceptmoderatorinvite': '{author} ha aceptado la invitación a la moderación.',
+    'acceptmoderatorinvite': 'Invitación a la moderación aceptada.',
     'approvecomment': 'Comentario de {author} aprobado.',
     'approvelink': 'Publicación aprobada.',
     'banuser': 'Usuario(a) {author} baneado(a).',
