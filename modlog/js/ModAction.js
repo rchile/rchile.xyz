@@ -119,6 +119,7 @@
 
   // Default icon for every action type (including virtual ones)
   let iconMap = {
+    'acceptmoderatorinvite': 'how_to_reg',
     'approvecomment': 'add_comment',
     'approvelink': 'done_all',
     'banuser': 'gavel',
@@ -128,6 +129,7 @@
     'editflair': 'rate_review',
     'ignorereportscomment': 'report_off',
     'ignorereportspost': 'assignment_returned',
+    'invitemoderator': 'contact_mail',
     'lock': 'lock',
     'marknsfw': 'airline_seat_recline_extra',
     'markoriginalcontent': 'folder_special',
@@ -157,6 +159,7 @@
 
   // Default descriptions
   let descriptionMap = {
+    'acceptmoderatorinvite': '{author} ha aceptado la invitación a la moderación.',
     'approvecomment': 'Comentario de {author} aprobado.',
     'approvelink': 'Publicación aprobada.',
     'banuser': 'Usuario(a) {author} baneado(a).',
@@ -165,6 +168,7 @@
     'editflair': 'Etiqueta de publicación editada.',
     'ignorereportscomment': 'Reportes del comentario de {author} ignorados.',
     'ignorereportspost': 'Reportes de publicación ignorados.',
+    'invitemoderator': 'Usuario(a) {author} invitado(a) a la moderación.',
     'lock': 'Comentarios de publicación bloqueados.',
     'marknsfw': 'Publicación marcada como NSFW.',
     'markoriginalcontent': 'Publicación marcada como OC (Original Content)',

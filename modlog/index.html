@@ -54,6 +54,7 @@
                   <p v-if="action.details" v-html="action.details"></p>
                   <pre class="target-body" v-if="action.content" v-html="md(action.content)"></pre>
                 </div>
+                <div class="mt-1" v-if="action.entry.notes" v-html="md('Notas: ' + action.entry.notes)"></div>
               </div>
             </div>
           </div> <!-- /.card-content -->
