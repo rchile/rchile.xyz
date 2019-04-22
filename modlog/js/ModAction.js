@@ -119,6 +119,7 @@
 
   // Default icon for every action type (including virtual ones)
   let iconMap = {
+    'acceptmoderatorinvite': 'how_to_reg',
     'approvecomment': 'add_comment',
     'approvelink': 'done_all',
     'banuser': 'gavel',
@@ -128,12 +129,14 @@
     'editflair': 'rate_review',
     'ignorereportscomment': 'report_off',
     'ignorereportspost': 'assignment_returned',
+    'invitemoderator': 'contact_mail',
     'lock': 'lock',
     'marknsfw': 'airline_seat_recline_extra',
     'markoriginalcontent': 'folder_special',
     'removecomment': 'speaker_notes_off',
     'removelink': 'delete',
     'removelinkauto': 'delete',
+    'removemoderator': 'sentiment_very_dissatisfied',
     'setsuggestedsort': 'sort',
     'spamcomment': 'report',
     'spamlinkcomment': 'delete_outline',
@@ -146,6 +149,7 @@
     'unbanuser': 'how_to_reg',
     'unignorereportscomment': 'assignment_turned_in',
     'unignorereportspost': 'assignment_turned_in',
+    'unlock': 'lock_open',
     'unspoiler': 'visibility',
     'unstickycomment': 'location_off',
     'unstickypost': 'location_off',
@@ -155,6 +159,7 @@
 
   // Default descriptions
   let descriptionMap = {
+    'acceptmoderatorinvite': 'Invitación a la moderación aceptada.',
     'approvecomment': 'Comentario de {author} aprobado.',
     'approvelink': 'Publicación aprobada.',
     'banuser': 'Usuario(a) {author} baneado(a).',
@@ -163,12 +168,14 @@
     'editflair': 'Etiqueta de publicación editada.',
     'ignorereportscomment': 'Reportes del comentario de {author} ignorados.',
     'ignorereportspost': 'Reportes de publicación ignorados.',
+    'invitemoderator': 'Usuario(a) {author} invitado(a) a la moderación.',
     'lock': 'Comentarios de publicación bloqueados.',
     'marknsfw': 'Publicación marcada como NSFW.',
     'markoriginalcontent': 'Publicación marcada como OC (Original Content)',
     'removecomment': 'Comentario de {author} eliminado.',
     'removelink': 'Publicación eliminada.',
     'removelinkauto': 'Publicación automáticamente eliminada.',
+    'removemoderator': 'Usuario(a) {author} removido de la moderación.',
     'setsuggestedsort': 'Se cambió el orden predeterminado de una publicación.',
     'spamcomment': 'Comentario de {author} eliminado como spam.',
     'spamlinkcomment': 'Comentario de {author} eliminado por spam.',
@@ -181,6 +188,7 @@
     'unbanuser': 'Usuario(a) {author} desbaneado(a).',
     'unignorereportscomment': 'Ignorado de reportes del comentario de {author} revertido.',
     'unignorereportspost': 'Ignorado de reportes de publicación revertido.',
+    'unlock': 'Publicación desbloqueada',
     'unspoiler': 'Publicación desmarcada como spoiler.',
     'unstickycomment': 'Fijado de comentario {author} quitado.',
     'unstickypost': 'Fijado de publicación quitado.',
