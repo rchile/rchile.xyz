@@ -9,66 +9,96 @@
   <link rel="stylesheet" type="text/css" media="screen" href="css/modlog.css">  
 </head>
 <body>
-  <nav>
-    <div class="nav-wrapper">
-      <ul class="left">
-        <li><a href="#">/r/chile modlog</a></li>
-      </ul>
-      <ul id="nav-mobile" class="right hide-on-small-and-down">
-        <li><a class="modal-trigger" href="#about-modal">Acerca de</a></li>
-        <li><a href="https://reddit.com/r/chile" target="_blank">Subreddit</a></li>
-        <li><a href="https://reddit.com/r/chile/wiki/reglas" target="_blank">Reglas</a></li>
-        <li><a href="https://reddit.com/message/compose?to=/r/chile" target="_blank">Modmail</a></li>
-      </ul>
-    </div>
-  </nav>
-  <div class="container">
-    <div class="page-content" id="app">
+  <div id="app">
+    <nav>
+      <div class="nav-wrapper">
+        <ul class="left">
+          <li><a href="#">/r/chile modlog</a></li>
+          <li v-if="user">
+            <a :href="api + '/logout'">{{ user }} (salir)</a>
+          </li>
+          <li v-else>
+            <a :href="api + '/login'">GO</a>
+          </li>
+        </ul>
+        <ul id="nav-mobile" class="right hide-on-small-and-down">
+          <li><a class="modal-trigger" href="#about-modal">Acerca de</a></li>
+          <li><a href="https://reddit.com/r/chile" target="_blank">Subreddit</a></li>
+          <li><a href="https://reddit.com/r/chile/wiki/reglas" target="_blank">Reglas</a></li>
+          <li><a href="https://reddit.com/message/compose?to=/r/chile" target="_blank">Modmail</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="page-content">
 
-      <div v-for="action in logEntries">
+        <div v-for="action in logEntries">
 
-        <div class="card">
-          <div class="card-content row">
-            <div class="right">
-              <span :title="dateISOUTC(action.entry.created_utc)">
-                <i class="material-icons">access_time</i> {{ action | timeago }}
-              </span> |
-              <a :href="modURL(action.entry.mod)" target="_blank">{{ action.entry.mod }}</a> |
-              <a v-if="action.entry.target_permalink" :href="targetPermalink(action.entry)" target="_blank">
-                <i class="material-icons">open_in_new</i>
-              </a>
-              <a class="waves-effect waves-light" @click.prevent="details(action)" :href="'#'+action.entry.id">
-                <i class="material-icons">speaker_notes</i>
-              </a>
-            </div>
+          <div class="card">
+            <div class="card-content row">
+              <div class="right">
+                <span :title="dateISOUTC(action.entry.created_utc)">
+                  <i class="material-icons">access_time</i> {{ action | timeago }}
+                </span> |
+                <a :href="modURL(action.entry.mod)" target="_blank">{{ action.entry.mod }}</a> |
+                <a v-if="action.entry.target_permalink" :href="targetPermalink(action.entry)" target="_blank">
+                  <i class="material-icons">open_in_new</i>
+                </a>
+                <a class="waves-effect waves-light" @click.prevent="details(action)" :href="'#'+action.entry.id">
+                  <i class="material-icons">speaker_notes</i>
+                </a>
+              </div>
 
-            <div>
-              <div class="col s12 m1"><i class="material-icons">{{ action.icon }}</i></div>
-              <div class="col s12 m11">
-                <p v-if="action.description" style="font-weight: bold" v-html="action.description"></p>
-                <p v-if="action.details" v-html="action.details"></p>
-                <pre class="target-body" v-if="action.content" v-html="md(action.content)"></pre>
+              <div>
+                <div class="col s12 m1"><i class="material-icons">{{ action.icon }}</i></div>
+                <div class="col s12 m11">
+                  <p v-if="action.description" style="font-weight: bold" v-html="action.description"></p>
+                  <p v-if="action.details" v-html="action.details"></p>
+                  <pre class="target-body" v-if="action.content" v-html="md(action.content)"></pre>
+                </div>
+              </div>
+            </div> <!-- /.card-content -->
+          </div> <!-- /.card -->
+
+        </div> <!-- /for -->
+
+        <div class="card" v-if="error">
+          <div class="card-content center-align">
+            <span v-if="logEntries.length == 0">
+              No fue posible cargar las acciones de moderador.
+            </span>
+            <span v-else>
+              No fue posible cargar más acciones de moderador.
+            </span>
+          </div>
+        </div>
+        <div v-else>
+          <div class="card" v-if="loading">
+            <div class="card-content center-align">
+              <p>Cargando...<br><br></p>
+              <div class="preloader-wrapper active">
+                <div class="spinner-layer spinner-red-only">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div><div class="gap-patch">
+                    <div class="circle"></div>
+                  </div><div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div> <!-- /.card-content -->
-        </div> <!-- /.card -->
-
-      </div> <!-- /for -->
-
-      <div class="card" v-if="error">
-        <div class="card-content center-align">
-          <span v-if="logEntries.length == 0">
-            No fue posible cargar las acciones de moderador.
-          </span>
-          <span v-else>
-            No fue posible cargar más acciones de moderador.
-          </span>
+          </div>
+          <div class="card" v-else-if="logEntries.length == 0">
+            <div class="card-content center-align">
+              No hay acciones de moderador.
+            </div>
+          </div>
         </div>
-      </div>
-      <div v-else>
-        <div class="card" v-if="loading">
-          <div class="card-content center-align">
-            <p>Cargando...<br><br></p>
+
+        <div id="entry-modal" class="modal">
+          <div class="modal-content" v-if="selectedLoading">
+            <p>Cargando entrada...<br><br></p>
             <div class="preloader-wrapper active">
               <div class="spinner-layer spinner-red-only">
                 <div class="circle-clipper left">
@@ -81,78 +111,56 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="card" v-else-if="logEntries.length == 0">
-          <div class="card-content center-align">
-            No hay acciones de moderador.
-          </div>
-        </div>
-      </div>
 
-      <div id="entry-modal" class="modal">
-        <div class="modal-content" v-if="selectedLoading">
-          <p>Cargando entrada...<br><br></p>
-          <div class="preloader-wrapper active">
-            <div class="spinner-layer spinner-red-only">
-              <div class="circle-clipper left">
-                <div class="circle"></div>
-              </div><div class="gap-patch">
-                <div class="circle"></div>
-              </div><div class="circle-clipper right">
-                <div class="circle"></div>
-              </div>
+          <div class="modal-content" v-if="selectedEntry">
+            <div style="font-size: 24px">Detalles de la acción</div>
+            <div style="float: right">
+              <a v-if="selectedEntry.entry.target_permalink" :href="targetPermalink(selectedEntry.entry)" target="_blank">
+                <i class="material-icons">open_in_new</i>
+              </a>
+              <a class="waves-effect waves-light" @click.prevent="console.log(selectedEntry.entry)" href="#" 
+                title="Enviar los datos en bruto a la consola de desarrollo">
+                <i class="material-icons">code</i>
+              </a>
             </div>
+            <div style="margin-top: 12px">
+              <i class="material-icons">{{ selectedEntry.icon }}</i>
+              <span v-html="selectedEntry.description" style="font-weight: bold"></span>
+              Por <a :href="modURL(selectedEntry.entry.mod)" target="_blank">/u/{{ selectedEntry.entry.mod }}</a>.
+              <span :title="dateISOUTC(selectedEntry.entry.created_utc)">
+                {{ selectedEntry | timeago | capitalize }}.
+              </span>
+            </div>
+            <div v-if="selectedEntry.details" v-html="selectedEntry.details" style="padding-left: 37px"></div>
+            <div class="target-body" v-if="selectedEntry.content" v-html="md(selectedEntry.content)"></div>
           </div>
         </div>
 
-        <div class="modal-content" v-if="selectedEntry">
-          <div style="font-size: 24px">Detalles de la acción</div>
-          <div style="float: right">
-            <a v-if="selectedEntry.entry.target_permalink" :href="targetPermalink(selectedEntry.entry)" target="_blank">
-              <i class="material-icons">open_in_new</i>
-            </a>
-            <a class="waves-effect waves-light" @click.prevent="console.log(selectedEntry.entry)" href="#" 
-              title="Enviar los datos en bruto a la consola de desarrollo">
-              <i class="material-icons">code</i>
-            </a>
+        <div id="about-modal" class="modal">
+          <div class="modal-content">
+            <h5>Acerca de</h5>
+            <p>
+              Este sitio permite ver la lista de acciones realizadas por los moderadores de
+              <a href="https://reddit.com/r/chile" target="_blank">/r/chile</a>. Actualmente
+              es desarrollado por <a href="https://reddit.com/user/makzk">/u/makzk</a>.
+            </p>
+            <p>
+              Puedes revisar el código del sitio web <a href="https://github.com/rchile/rchile.xyz/tree/master/modlog" target="_blank">aquí</a>
+              y el repositorio de la API <a href="https://github.com/rchile/modlog-api" target="_blank">aquí</a>.
+            </p>
+            <p>
+              Tanto la lógica del sitio web como la API están bajo la <a href="https://github.com/rchile/rchile.xyz/blob/master/modlog/LICENSE.txt" target="_blank">licencia MIT</a>, mientras que el diseño está bajo la licencia
+              <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CreativeCommons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)</a>.
+            </p>
+            <p>
+              <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a>
+            </p>
           </div>
-          <div style="margin-top: 12px">
-            <i class="material-icons">{{ selectedEntry.icon }}</i>
-            <span v-html="selectedEntry.description" style="font-weight: bold"></span>
-            Por <a :href="modURL(selectedEntry.entry.mod)" target="_blank">/u/{{ selectedEntry.entry.mod }}</a>.
-            <span :title="dateISOUTC(selectedEntry.entry.created_utc)">
-              {{ selectedEntry | timeago | capitalize }}.
-            </span>
-          </div>
-          <div v-if="selectedEntry.details" v-html="selectedEntry.details" style="padding-left: 37px"></div>
-          <div class="target-body" v-if="selectedEntry.content" v-html="md(selectedEntry.content)"></div>
-        </div>
-      </div>
+        </div> <!-- /#about-modal -->
 
-      <div id="about-modal" class="modal">
-        <div class="modal-content">
-          <h5>Acerca de</h5>
-          <p>
-            Este sitio permite ver la lista de acciones realizadas por los moderadores de
-            <a href="https://reddit.com/r/chile" target="_blank">/r/chile</a>. Actualmente
-            es desarrollado por <a href="https://reddit.com/user/makzk">/u/makzk</a>.
-          </p>
-          <p>
-            Puedes revisar el código del sitio web <a href="https://github.com/rchile/rchile.xyz/tree/master/modlog" target="_blank">aquí</a>
-            y el repositorio de la API <a href="https://github.com/rchile/modlog-api" target="_blank">aquí</a>.
-          </p>
-          <p>
-            Tanto la lógica del sitio web como la API están bajo la <a href="https://github.com/rchile/rchile.xyz/blob/master/modlog/LICENSE.txt" target="_blank">licencia MIT</a>, mientras que el diseño está bajo la licencia
-            <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CreativeCommons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)</a>.
-          </p>
-          <p>
-            <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a>
-          </p>
-        </div>
-      </div> <!-- /#about-modal -->
-
-    </div> <!-- /#app.card-content -->
-  </div> <!-- /.container -->
+      </div> <!-- /#app.card-content -->
+    </div> <!-- /.container -->
+  </div>
 
   <!-- External libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>

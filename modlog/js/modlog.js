@@ -2,16 +2,19 @@
   'use strict';
   let allowLoad = true;
   let timeagoIns = timeago();
-  let API = 'https://modlog.rchile.xyz';
+  //let API = 'https://modlog.rchile.xyz';
+  let API = 'http://127.0.0.1:5000';
 
   let app = new Vue({
     el: '#app',
     data: {
-      loading: true,
-      selectedLoading: false,
+      api: API,
       error: false,
+      loading: true,
       logEntries: [],
+      selectedLoading: false,
       selectedEntry: null,
+      user: null,
       details: function(action) {
         w.location.hash = action.entry.id;
         app.selectedEntry = action;
@@ -55,6 +58,12 @@
       M.Modal.getInstance(d.querySelector('#entry-modal')).options.onCloseStart = function() {
         history.pushState("", d.title, w.location.pathname + w.location.search);
       };
+
+      checkSession().then(resp => {
+        if (resp.data.logged) {
+          app.user = resp.data.username;
+        }
+      });
     }
   });
 
@@ -107,6 +116,10 @@
       app.selectedEntry = entry;
       modal.open();
     }
+  }
+
+  function checkSession() {
+    return axios.get(API + '/session', {withCredentials: true});
   }
 
   // Load more entries when the bottom is reached
