@@ -15,9 +15,12 @@
       selectedLoading: false,
       selectedEntry: null,
       user: null,
+      savingNotes: false,
+      writingNotes: '',
       details: function(action) {
         w.location.hash = action.entry.id;
         app.selectedEntry = action;
+        app.writingNotes = action.entry.notes || '';
 
         let modal = M.Modal.getInstance(d.querySelector('#entry-modal'));
         if (!modal.isOpen)
@@ -35,6 +38,24 @@
       },
       targetPermalink: function(entry) {
         return 'https://reddit.com' + entry.target_permalink;
+      },
+      saveNotes: function() {
+        if (app.savingNotes) {
+          return;
+        }
+
+        let action = app.selectedEntry;
+        let data = {notes: app.writingNotes, entry_id: action.entry.id};
+
+        app.savingNotes = true;
+        axios.post(`${API}/entry_notes/`, data, {withCredentials: true}).then(resp => {
+          console.log(resp);
+          app.savingNotes = false;
+          app.selectedEntry.entry.notes = app.writingNotes;
+        }).catch(err => {
+          app.savingNotes = false;
+          console.log(err);
+        });
       }
     },
     filters: {

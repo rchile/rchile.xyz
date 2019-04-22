@@ -61,7 +61,6 @@
                   <pre class="target-body" v-if="action.content" v-html="md(action.content)"></pre>
                 </div>
                 <div class="mt-1" v-if="action.entry.notes" v-html="md('Notas: ' + action.entry.notes)"></div>
-
               </div>
             </div> <!-- /.card-content -->
           </div> <!-- /.card -->
@@ -146,6 +145,18 @@
             <div v-else>
               <div v-if="selectedEntry.details" v-html="selectedEntry.details" style="padding-left: 37px"></div>
               <div class="target-body" v-if="selectedEntry.content" v-html="md(selectedEntry.content)"></div>
+            </div>
+
+            <div v-if="user">
+              <div class="input-field">
+                <textarea id="sel-notes" class="materialize-textarea" v-model="writingNotes" :disabled="savingNotes"></textarea>
+                <label for="sel-notes">Notas de acción</label>
+                <button class="btn waves-effect waves-light right" type="submit" name="action"
+                  @click.prevent="saveNotes()" :disabled="savingNotes" style="margin-bottom: 1rem">
+                  Guardar
+                  <i class="material-icons right">send</i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
