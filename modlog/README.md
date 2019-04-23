@@ -8,7 +8,7 @@ It displays the list of entries from the modlog.
 * ~~Better way to handle actions (entry types)~~
 * ~~Single entry support (load single entries from API)~~
 * ~~Entry permalinks~~
-* Mod login to add notes (also an API task)
+* ~~Mod login to add notes (also an API task)~~
 * Data analysis
 * Update entries list (also an API task)
 
