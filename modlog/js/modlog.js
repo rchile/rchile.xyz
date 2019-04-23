@@ -2,13 +2,13 @@
   'use strict';
   let allowLoad = true;
   let timeagoIns = timeago();
-  let API = 'https://modlog.rchile.xyz';
-  //let API = 'http://127.0.0.1:5000';
+  let baseURL = 'https://modlog.rchile.xyz';
+  let api = axios.create({ baseURL: baseURL });
 
   let app = new Vue({
     el: '#app',
     data: {
-      api: API,
+      api: baseURL,
       error: false,
       loading: true,
       logEntries: [],
@@ -39,6 +39,11 @@
       targetPermalink: function(entry) {
         return 'https://reddit.com' + entry.target_permalink;
       },
+      rawEntry: function(entry) {
+        let data = JSON.stringify(app.selectedEntry.entry, null, 2);
+        console.log('Datos de la acción:', JSON.parse(data))
+        alert("Datos en bruto de la acción:\n\n" + data);
+      },
       saveNotes: function() {
         if (app.savingNotes) {
           return;
@@ -48,7 +53,7 @@
         let data = {notes: app.writingNotes, entry_id: action.entry.id};
 
         app.savingNotes = true;
-        axios.post(`${API}/entry_notes/`, data, {withCredentials: true}).then(resp => {
+        api.post('/entry_notes', data, {withCredentials: true}).then(resp => {
           console.log(resp);
           app.savingNotes = false;
           app.selectedEntry.entry.notes = app.writingNotes;
@@ -80,7 +85,7 @@
         history.pushState("", d.title, w.location.pathname + w.location.search);
       };
 
-      checkSession().then(resp => {
+      api.get('/session', {withCredentials: true}).then(resp => {
         if (resp.data.logged) {
           app.user = resp.data.username;
         }
@@ -89,14 +94,12 @@
   });
 
   function loadEntries(after) {
-    let endpoint = API + '/entries';
-    if (after) {
-      endpoint += '/after/' + after;
-    }
+    let endpoint = '/entries' + (after ? '/after/' + after : '');
 
     app.loading = true;
     allowLoad = false;
-    axios.get(endpoint, {}).then(resp => {
+
+    api.get(endpoint).then(resp => {
       app.loading = false;
       allowLoad = true;
 
@@ -122,7 +125,7 @@
     let selected = app.logEntries.find(x => x.entry.id === hashId);
     if (!selected) {
       app.selectedLoading = true;
-      axios.get(API + '/entry/' + hashId).then(function(data) {
+      api.get('/entry/' + hashId).then(function(data) {
         app.selectedLoading = false;
         openHashEntry(new ModAction(data.data));
       });
@@ -137,10 +140,6 @@
       app.selectedEntry = entry;
       modal.open();
     }
-  }
-
-  function checkSession() {
-    return axios.get(API + '/session', {withCredentials: true});
   }
 
   // Load more entries when the bottom is reached

@@ -8,9 +8,9 @@
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" type="text/css" media="screen" href="css/modlog.css">  
 </head>
-<body>
+<body class="grey darken-4">
   <div id="app">
-    <nav>
+    <nav class="grey darken-2">
       <div class="nav-wrapper">
         <ul class="left">
           <li><a href="#">/r/chile modlog</a></li>
@@ -34,7 +34,7 @@
 
         <div v-for="action in logEntries">
 
-          <div class="card">
+          <div class="card grey darken-3">
             <div class="card-content row">
               <div class="right">
                 <span :title="dateISOUTC(action.entry.created_utc)">
@@ -58,7 +58,7 @@
                 <div v-else>
                   <p v-if="action.description" style="font-weight: bold" v-html="action.description"></p>
                   <p v-if="action.details" v-html="action.details"></p>
-                  <pre class="target-body" v-if="action.content" v-html="md(action.content)"></pre>
+                  <div class="target-body grey darken-2" v-if="action.content" v-html="md(action.content)"></div>
                 </div>
                 <div class="mt-1" v-if="action.entry.notes" v-html="md('Notas: ' + action.entry.notes)"></div>
               </div>
@@ -67,7 +67,7 @@
 
         </div> <!-- /for -->
 
-        <div class="card" v-if="error">
+        <div class="card grey darken-3" v-if="error">
           <div class="card-content center-align">
             <span v-if="logEntries.length == 0">
               No fue posible cargar las acciones de moderador.
@@ -78,7 +78,7 @@
           </div>
         </div>
         <div v-else>
-          <div class="card" v-if="loading">
+          <div class="card grey darken-3" v-if="loading">
             <div class="card-content center-align">
               <p>Cargando...<br><br></p>
               <div class="preloader-wrapper active">
@@ -94,14 +94,14 @@
               </div>
             </div>
           </div>
-          <div class="card" v-else-if="logEntries.length == 0">
+          <div class="card grey darken-3" v-else-if="logEntries.length == 0">
             <div class="card-content center-align">
               No hay acciones de moderador.
             </div>
           </div>
         </div>
 
-        <div id="entry-modal" class="modal">
+        <div id="entry-modal" class="modal grey darken-3">
           <div class="modal-content" v-if="selectedLoading">
             <p>Cargando entrada...<br><br></p>
             <div class="preloader-wrapper active">
@@ -123,7 +123,7 @@
               <a v-if="selectedEntry.entry.target_permalink" :href="targetPermalink(selectedEntry.entry)" target="_blank">
                 <i class="material-icons">open_in_new</i>
               </a>
-              <a class="waves-effect waves-light" @click.prevent="console.log(selectedEntry.entry)" href="#" 
+              <a class="waves-effect waves-light" @click.prevent="rawEntry()" href="#" 
                 title="Enviar los datos en bruto a la consola de desarrollo">
                 <i class="material-icons">code</i>
               </a>
@@ -144,7 +144,7 @@
             </div>
             <div v-else>
               <div v-if="selectedEntry.details" v-html="selectedEntry.details" style="padding-left: 37px"></div>
-              <div class="target-body" v-if="selectedEntry.content" v-html="md(selectedEntry.content)"></div>
+              <div class="target-body grey darken-2" v-if="selectedEntry.content" v-html="md(selectedEntry.content)"></div>
             </div>
 
             <div v-if="user">
