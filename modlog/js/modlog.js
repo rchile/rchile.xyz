@@ -27,7 +27,6 @@
         app.writingNotes = action.entry.notes || '';
         app.writtingHidden = action.entry.hidden || false;
         app.writtingHiddenReason = action.entry.hiddenNotes || '';
-        console.log(action);
 
         let modal = M.Modal.getInstance(d.querySelector('#entry-modal'));
         if (!modal.isOpen)
