@@ -2,8 +2,8 @@
   'use strict';
   let allowLoad = true;
   let timeagoIns = timeago();
-  //let baseURL = 'https://modlog.rchile.xyz';
-  let baseURL = 'http://127.0.0.1:5000';
+  let baseURL = 'https://modlog.rchile.xyz';
+  //let baseURL = 'http://127.0.0.1:5000';
   let api = axios.create({ baseURL: baseURL });
 
   let app = new Vue({
