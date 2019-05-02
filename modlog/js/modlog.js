@@ -2,7 +2,8 @@
   'use strict';
   let allowLoad = true;
   let timeagoIns = timeago();
-  let baseURL = 'https://modlog.rchile.xyz';
+  //let baseURL = 'https://modlog.rchile.xyz';
+  let baseURL = 'http://127.0.0.1:5000';
   let api = axios.create({ baseURL: baseURL });
 
   let app = new Vue({
@@ -17,10 +18,16 @@
       user: null,
       savingNotes: false,
       writingNotes: '',
+      writtingHiddenReason: '',
+      writtingHidden: false,
+      savingHidden: false,
       details: function(action) {
         w.location.hash = action.entry.id;
         app.selectedEntry = action;
         app.writingNotes = action.entry.notes || '';
+        app.writtingHidden = action.entry.hidden || false;
+        app.writtingHiddenReason = action.entry.hiddenNotes || '';
+        console.log(action);
 
         let modal = M.Modal.getInstance(d.querySelector('#entry-modal'));
         if (!modal.isOpen)
@@ -54,11 +61,30 @@
 
         app.savingNotes = true;
         api.post('/entry_notes', data, {withCredentials: true}).then(resp => {
-          console.log(resp);
           app.savingNotes = false;
           app.selectedEntry.entry.notes = app.writingNotes;
         }).catch(err => {
           app.savingNotes = false;
+          console.log(err);
+        });
+      },
+      saveHidden: function() {
+        if (app.savingHidden) {
+          return;
+        }
+
+        let action = app.selectedEntry;
+        let data = { is_hidden: !!app.writtingHidden, entry_id: action.entry.id };
+        if (!!app.writtingHidden) {
+          data.reason = app.writtingHiddenReason;
+        }
+
+        app.savingHidden = true;
+        api.post('/hide_entry/', data, {withCredentials: true}).then(resp => {
+          app.savingHidden = false;
+          app.selectedEntry.entry = resp.data.entry;
+        }).catch(err => {
+          app.savingHidden = false;
           console.log(err);
         });
       }
@@ -127,18 +153,10 @@
       app.selectedLoading = true;
       api.get('/entry/' + hashId).then(function(data) {
         app.selectedLoading = false;
-        openHashEntry(new ModAction(data.data));
+        app.details(new ModAction(data.data));
       });
     } else {
-      openHashEntry(selected)
-    }
-  }
-
-  function openHashEntry(entry) {
-    let modal = M.Modal.getInstance(d.querySelector('#entry-modal'));
-    if (!modal.isOpen && !app.selectedEntry || entry.entry.id !== app.selectedEntry.entry.id) {
-      app.selectedEntry = entry;
-      modal.open();
+      app.details(selected)
     }
   }
 

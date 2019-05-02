@@ -148,15 +148,36 @@
             </div>
 
             <div v-if="user">
-              <div class="input-field">
-                <textarea id="sel-notes" class="materialize-textarea" v-model="writingNotes" :disabled="savingNotes"></textarea>
-                <label for="sel-notes">Notas de acción</label>
-                <button class="btn waves-effect waves-light right" type="submit" name="action"
-                  @click.prevent="saveNotes()" :disabled="savingNotes" style="margin-bottom: 1rem">
-                  Guardar
-                  <i class="material-icons right">send</i>
-                </button>
+              <div class="row" style="margin-top: .5rem">
+                <div class="input-field col s8 m10" style="margin:0">
+                  <textarea id="sel-notes" class="materialize-textarea" v-model="writingNotes" :disabled="savingNotes"></textarea>
+                  <label for="sel-notes">Notas de acción</label>
+                </div>
+                <div class="col s4 m2">
+                  <button class="btn-small waves-effect waves-light right" type="submit" name="action"
+                    @click.prevent="saveNotes()" :disabled="savingNotes" style="margin-top: .5rem">
+                    Guardar
+                    <i class="material-icons right">send</i>
+                  </button>
+                </div>
               </div>
+              <div class="row">
+                <div class="col s4 m2">
+                  <p>
+                    <label>
+                      <input type="checkbox" checked="checked" class="filled-in" v-model="writtingHidden" :disabled="savingHidden">
+                      <span>Ocultar</span>
+                    </label>
+                  </p>
+                </div>
+                <div class="input-field col s8" style="margin: 0" v-if="writtingHidden">
+                  <input type="text" maxlength="1000" v-model="writtingHiddenReason">
+                  <label for="first_name" :disabled="savingHidden">Razón para ocultar acción</label>
+                </div>
+                <div class="col s8">
+                  <a class="waves-effect waves-light btn-small" style="margin-top:.5rem"
+                    @click.prevent="saveHidden()" :disabled="savingHidden">Guardar</a>
+                </div>
             </div>
           </div>
         </div>
