@@ -52,15 +52,15 @@
 }
 
 .target-body p {
-  margin: 12px 0 12px 0;
+  margin: .25rem 0 !important;
 }
 
 .target-body p:first-child {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 .target-body p:last-child {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 .target-body > :last-child {
@@ -79,6 +79,35 @@
 
 .target-body blockquote:last-child {
   margin-bottom: 0px;
+}
+
+.target-body h1,
+.target-body h2,
+.target-body h3,
+.target-body h4,
+.target-body h5,
+.target-body h6 {
+  margin: 1.5rem 0 1rem 0;
+  font-weight: 400;
+}
+
+.target-body h1 {
+  font-size: 26px;
+}
+.target-body h2 {
+  font-size: 24px;
+}
+.target-body h3 {
+  font-size: 20px;
+}
+.target-body h4 {
+  font-size: 18px;
+}
+.target-body h5 {
+  font-size: 16px;
+}
+.target-body h6 {
+  font-size: 12px;
 }
 
 .modal-content .material-icons:first-child {
