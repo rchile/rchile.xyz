@@ -10,27 +10,59 @@
 </head>
 <body class="grey darken-4">
   <div id="app">
-    <nav class="grey darken-2">
-      <div class="nav-wrapper">
-        <ul class="left">
-          <li><a href="#">/r/chile modlog</a></li>
-          <li v-if="user">
-            <a :href="api + '/logout'">{{ user }} (salir)</a>
-          </li>
-          <li v-else>
-            <a :href="api + '/login'">GO</a>
-          </li>
-        </ul>
-        <ul id="nav-mobile" class="right hide-on-small-and-down">
-          <li><a class="modal-trigger" href="#about-modal">Acerca de</a></li>
-          <li><a href="https://reddit.com/r/chile" target="_blank">Subreddit</a></li>
-          <li><a href="https://reddit.com/r/chile/wiki/reglas" target="_blank">Reglas</a></li>
-          <li><a href="https://reddit.com/message/compose?to=/r/chile" target="_blank">Modmail</a></li>
-        </ul>
-      </div>
-    </nav>
+    <div class="navbar-fixed">
+      <nav class="grey darken-2">
+        <div class="nav-wrapper">
+          <ul class="left">
+            <li><a href="#">/r/chile modlog</a></li>
+            <li v-if="user">
+              <a :href="api + '/logout'">{{ user }} (salir)</a>
+            </li>
+            <li v-else>
+              <a :href="api + '/login'">GO</a>
+            </li>
+          </ul>
+          <ul id="nav-mobile" class="right hide-on-small-and-down">
+            <li><a class="modal-trigger" href="#about-modal">Acerca de</a></li>
+            <li><a href="https://reddit.com/r/chile" target="_blank">Subreddit</a></li>
+            <li><a href="https://reddit.com/r/chile/wiki/reglas" target="_blank">Reglas</a></li>
+            <li><a href="https://reddit.com/message/compose?to=/r/chile" target="_blank">Modmail</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div> <!-- /navbar -->
+
     <div class="container">
       <div class="page-content">
+        <!--div id="filter-form">
+          <form class="col s12">
+            <div class="row">
+              <div class="input-field col s4">
+                <input placeholder="[/u/]username" id="author_user" type="text" class="validate">
+                <label for="author_user">Author user</label>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="[/u/]username" id="mod_user" type="text" class="validate">
+                <label for="mod_user">Mod user</label>
+              </div>
+              <div class="input-field col s3">
+                <input placeholder="removecomment" id="mod_user" type="text" class="validate" list="actions-list">
+                <label for="mod_user">Action type</label>
+                <datalist id="actions-list">
+                  <option value="removelinkauto">Automoderator link removal</option>
+                  <option value="removecomment">Comment removed</option>
+                  <option value="lock">Comments blocked</option>
+                  <option value="stickycomment">Stickied comment</option>
+                  <option value="distinguishcomment">Distinguished comment</option>
+                  <option value="stickydistinguishcomment">Stickied and distinguished comment</option>
+                </datalist>
+              </div>
+              <div class="input-field col s1">
+                <a class="waves-effect waves-light btn">Filter</a>
+              </div>
+            </div>
+          </form>
+        </div--> <!-- /#filter-form -->
 
         <div v-for="action in logEntries">
 
