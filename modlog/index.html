@@ -111,8 +111,8 @@
           </div>
         </div>
         <div v-else>
-          <div class="card grey darken-3" v-if="loading">
-            <div class="card-content center-align">
+          <div class="card grey darken-3">
+            <div class="card-content center-align" v-if="loading">
               <p>Cargando...<br><br></p>
               <div class="preloader-wrapper active">
                 <div class="spinner-layer spinner-red-only">
@@ -125,6 +125,9 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <div v-else class="card-content center-align">
+              <a class="waves-effect waves-light btn" @click.prevent="loadMore">Cargar más</a>
             </div>
           </div>
           <div class="card grey darken-3" v-else-if="logEntries.length == 0">

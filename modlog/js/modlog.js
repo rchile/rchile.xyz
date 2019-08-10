@@ -94,6 +94,13 @@
       },
       getUnique: function(name) {
         return this.logEntries.reduce((p, v) => { p.indexOf(v.entry[name]) === -1 && p.push(v.entry[name]); return p; }, []);
+      },
+      loadMore: function() {
+        if (this.loading) {
+          return;
+        }
+
+        loadEntries(this.logEntries[this.logEntries.length - 1].entry.id);
       }
     },
     filters: {
