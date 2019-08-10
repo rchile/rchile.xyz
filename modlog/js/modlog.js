@@ -21,6 +21,11 @@
       writtingHiddenReason: '',
       writtingHidden: false,
       savingHidden: false,
+
+      filterAuthor: '',
+      filterMod: '',
+      filterAction: '',
+
       details: function(action) {
         w.location.hash = action.entry.id;
         app.selectedEntry = action;
@@ -86,6 +91,9 @@
           app.savingHidden = false;
           console.log(err);
         });
+      },
+      getUnique: function(name) {
+        return this.logEntries.reduce((p, v) => { p.indexOf(v.entry[name]) === -1 && p.push(v.entry[name]); return p; }, []);
       }
     },
     filters: {
@@ -97,6 +105,32 @@
       },
       capitalize: function(value) {
         return value.charAt(0).toUpperCase() + value.slice(1);
+      }
+    },
+    computed: {
+      filteredEntries: function() {
+        return this.logEntries.filter(x => {
+          if (this.filterAuthor !== '' && x.entry.target_author.indexOf(this.filterAuthor) === -1) {
+            return false;
+          }
+          if (this.filterMod !== '' && x.entry.mod.indexOf(this.filterMod) === -1) {
+            return false;
+          }
+          if (this.filterAction !== '' && x.entry.action.indexOf(this.filterAction) === -1) {
+            return false;
+          }
+
+          return true;
+        });
+      },
+      mods: function() {
+        return this.getUnique('mod');
+      },
+      wetas: function() {
+        return this.getUnique('target_author');
+      },
+      actions: function() {
+        return this.getUnique('action');
       }
     },
     updated: function(){ this.$nextTick(() => {
@@ -155,7 +189,7 @@
         app.details(new ModAction(data.data));
       });
     } else {
-      app.details(selected)
+      app.details(selected);
     }
   }
 
