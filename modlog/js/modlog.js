@@ -110,7 +110,9 @@
     computed: {
       filteredEntries: function() {
         return this.logEntries.filter(x => {
-          if (this.filterAuthor !== '' && x.entry.target_author.indexOf(this.filterAuthor) === -1) {
+          if (this.filterAuthor !== '' 
+            && x.entry.target_author != null 
+            && x.entry.target_author.indexOf(this.filterAuthor) === -1) {
             return false;
           }
           if (this.filterMod !== '' && x.entry.mod.indexOf(this.filterMod) === -1) {

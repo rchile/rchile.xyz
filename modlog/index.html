@@ -19,7 +19,7 @@
               <a :href="api + '/logout'">{{ user }} (salir)</a>
             </li>
             <li v-else>
-              <a :href="api + '/login'">GO</a>
+              <a :href="api + '/login'">Mod login</a>
             </li>
           </ul>
           <ul id="nav-mobile" class="right hide-on-small-and-down">
@@ -34,7 +34,7 @@
 
     <div class="container">
       <div class="page-content">
-        <div id="filter-form">
+        <div id="filter-form" v-if="user">
           <form class="col s12">
             <div class="row">
               <div class="input-field col s4">
