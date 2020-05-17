@@ -28,7 +28,6 @@
       filterAction: '',
 
       details: function(action) {
-        w.location.hash = action.entry.id;
         app.selectedEntry = action;
         app.writingNotes = action.entry.notes || '';
         app.writtingHidden = action.entry.hidden || false;
@@ -55,23 +54,6 @@
         let data = JSON.stringify(app.selectedEntry.entry, null, 2);
         console.log('Datos de la acción:', JSON.parse(data))
         alert("Datos en bruto de la acción:\n\n" + data);
-      },
-      saveNotes: function() {
-        if (app.savingNotes) {
-          return;
-        }
-
-        let action = app.selectedEntry;
-        let data = {notes: app.writingNotes, entry_id: action.entry.id};
-
-        app.savingNotes = true;
-        api.post('/entry_notes', data, {withCredentials: true}).then(resp => {
-          app.savingNotes = false;
-          app.selectedEntry.entry.notes = app.writingNotes;
-        }).catch(err => {
-          app.savingNotes = false;
-          console.log(err);
-        });
       },
       getUnique: function(name) {
         return this.logEntries.reduce((p, v) => { p.indexOf(v.entry[name]) === -1 && p.push(v.entry[name]); return p; }, []);
@@ -129,10 +111,6 @@
     mounted: function () {
       d.querySelector("#app").style.visibility = 'visible';
       M.Modal.init(d.querySelectorAll('.modal'));
-
-      M.Modal.getInstance(d.querySelector('#entry-modal')).options.onCloseStart = function() {
-        history.pushState("", d.title, w.location.pathname + w.location.search);
-      };
     }
   });
 
