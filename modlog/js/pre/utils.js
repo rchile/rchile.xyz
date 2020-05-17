@@ -54,54 +54,6 @@ String.prototype.format = function () {
     return str;
 };
 
-/**
- * Filter and parse modlog entries to shape them better to the app.
- * It can create virtual action types (non standard) to simplify
- * application logic.
- * @param  {array} entries Entries fetched from the API.
- * @return {array}         Filtered entries.
- */
-function filterEntries(entries) {
-  let twoTypesList = ['distinguish', 'sticky', 'unsticky', 'stickydistinguish',
-                      'spamlink', 'unignorereports', 'ignorereports'];
-  let autoTypesList = ['removelink'];
-
-  return entries.reduce((final, curr) => {
-    let nEntries = final.length;
-    if (nEntries > 0) {
-      // Join sticky and distinguish entries
-      let last = final[nEntries-1].entry;
-      if (last.mod == curr.mod && last.target_fullname == curr.target_fullname && 
-          ((last.action.startsWith('distinguish') && curr.action.startsWith('sticky')) || 
-            (last.action.startsWith('sticky') && curr.action.startsWith('distinguish'))
-          )) {
-        last.action = 'stickydistinguish';
-        last.action += !!last.target_title ? 'post' : 'comment';
-        final[nEntries-1] = new ModAction(last);
-        return final;
-      }
-    }
-
-    // Distinguish between actions made with posts and comments
-    if (twoTypesList.indexOf(curr.action) > -1) {
-      curr.action += !!curr.target_title ? 'post' : 'comment';
-    }
-
-    // Distinguish AutoModerator actions
-    if (autoTypesList.indexOf(curr.action) > -1 && curr.mod === 'AutoModerator') {
-      curr.action += 'auto';
-    }
-
-    // Special action type for end of temporal ban
-    if (curr.action === 'unbanuser' && curr.description === 'was temporary') {
-      curr.action = 'tempbanend';
-    }
-
-    final.push(new ModAction(curr));
-    return final;
-  }, []);
-}
-
 (function(w) {
   // Create a markdown-it instance and make it to add 'target="_blank"' to every link
   // https://github.com/markdown-it/markdown-it/blob/master/docs/architecture.md#renderer
@@ -125,4 +77,26 @@ function filterEntries(entries) {
   };
 
   w.md = md;
+
+  // Implements performance-aware onscroll event
+  // https://developer.mozilla.org/en-US/docs/Web/Events/scroll
+  let lastScroll = 0;
+  let ticking = false;
+  let callbacks = [];
+
+  w.addEventListener('scroll', function(e) {
+    lastScroll = w.scrollY;
+    if (!ticking) {
+      w.requestAnimationFrame(function() {
+        callbacks.forEach(x => x(lastScroll));
+        ticking = false;
+      });
+    }
+    ticking = true;
+  });
+
+  w.addScrollListener = function(f) {
+    callbacks.push(f);
+    return f;
+  };
 })(window);
