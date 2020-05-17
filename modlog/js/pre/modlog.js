@@ -73,26 +73,6 @@
           console.log(err);
         });
       },
-      saveHidden: function() {
-        if (app.savingHidden) {
-          return;
-        }
-
-        let action = app.selectedEntry;
-        let data = { is_hidden: !!app.writtingHidden, entry_id: action.entry.id };
-        if (!!app.writtingHidden) {
-          data.reason = app.writtingHiddenReason;
-        }
-
-        app.savingHidden = true;
-        api.post('/hide_entry/', data, {withCredentials: true}).then(resp => {
-          app.savingHidden = false;
-          app.selectedEntry.entry = resp.data.entry;
-        }).catch(err => {
-          app.savingHidden = false;
-          console.log(err);
-        });
-      },
       getUnique: function(name) {
         return this.logEntries.reduce((p, v) => { p.indexOf(v.entry[name]) === -1 && p.push(v.entry[name]); return p; }, []);
       },
@@ -153,12 +133,6 @@
       M.Modal.getInstance(d.querySelector('#entry-modal')).options.onCloseStart = function() {
         history.pushState("", d.title, w.location.pathname + w.location.search);
       };
-
-      api.get('/session', {withCredentials: true}).then(resp => {
-        if (resp.data.logged) {
-          app.user = resp.data.username;
-        }
-      });
     }
   });
 
@@ -174,33 +148,11 @@
 
       let result = ModAction.filterEntries(resp.data);
       app.logEntries = app.logEntries.concat(result);
-
-      if (!w.location.hash !== '') {
-        loadHashEntry();
-      }
     }).catch(function(error) {
       app.loading = false;
       app.error = true;
       console.error(error);
     });
-  }
-
-  function loadHashEntry() {
-    let hashId = w.location.hash.substr(1);
-    if (!isModEntryId(hashId)) {
-      return;
-    }
-
-    let selected = app.logEntries.find(x => x.entry.id === hashId);
-    if (!selected) {
-      app.selectedLoading = true;
-      api.get('/entry/' + hashId).then(function(data) {
-        app.selectedLoading = false;
-        app.details(new ModAction(data.data));
-      });
-    } else {
-      app.details(selected);
-    }
   }
 
   // Load more entries when the bottom is reached

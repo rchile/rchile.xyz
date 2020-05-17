@@ -15,12 +15,6 @@
         <div class="nav-wrapper">
           <ul class="left">
             <li><a href="#">/r/chile modlog</a></li>
-            <li v-if="user">
-              <a :href="api + '/logout'">{{ user }} (salir)</a>
-            </li>
-            <li v-else>
-              <a :href="api + '/login'">Mod login</a>
-            </li>
           </ul>
           <ul id="nav-mobile" class="right hide-on-small-and-down">
             <li><a class="modal-trigger" href="#about-modal">Acerca de</a></li>
@@ -34,37 +28,6 @@
 
     <div class="container">
       <div class="page-content">
-        <div id="filter-form" v-if="user">
-          <form class="col s12">
-            <div class="row">
-              <div class="input-field col s4">
-                <input placeholder="[/u/]username" id="author_user" type="text" class="validate" list="authors-list" v-model="filterAuthor">
-                <label for="author_user">Author user</label>
-                <datalist id="authors-list">
-                  <option v-for="user in wetas" :value="user">/u/{{user}}</option>
-                </datalist>
-              </div>
-              <div class="input-field col s4">
-                <input placeholder="[/u/]username" id="mod_user" type="text" class="validate" list="mods-datalist" v-model="filterMod">
-                <label for="mod_user">Mod user</label>
-                <datalist id="mods-datalist">
-                  <option v-for="mod in mods" :value="mod">/u/{{mod}}</option>
-                </datalist>
-              </div>
-              <div class="input-field col s3">
-                <input placeholder="removecomment" id="mod_user" type="text" class="validate" list="actions-list" v-model="filterAction">
-                <label for="mod_user">Action type</label>
-                <datalist id="actions-list">
-                  <option v-for="action in actions" :value="action">{{action}}</option>
-                </datalist>
-              </div>
-              <div class="input-field col s1">
-                <a class="waves-effect waves-light btn">Filter</a>
-              </div>
-            </div>
-          </form>
-        </div> <!-- /#filter-form -->
-
         <div v-for="action in filteredEntries">
 
           <div class="card grey darken-3">
@@ -183,38 +146,6 @@
               <div class="target-body grey darken-2" v-if="selectedEntry.content" v-html="md(selectedEntry.content)"></div>
             </div>
 
-            <div v-if="user">
-              <div class="row" style="margin-top: .5rem">
-                <div class="input-field col s8 m10" style="margin:0">
-                  <textarea id="sel-notes" class="materialize-textarea" v-model="writingNotes" :disabled="savingNotes"></textarea>
-                  <label for="sel-notes">Notas de acción</label>
-                </div>
-                <div class="col s4 m2">
-                  <button class="btn-small waves-effect waves-light right" type="submit" name="action"
-                    @click.prevent="saveNotes()" :disabled="savingNotes" style="margin-top: .5rem">
-                    Guardar
-                    <i class="material-icons right">send</i>
-                  </button>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col s4 m2">
-                  <p>
-                    <label>
-                      <input type="checkbox" checked="checked" class="filled-in" v-model="writtingHidden" :disabled="savingHidden">
-                      <span>Ocultar</span>
-                    </label>
-                  </p>
-                </div>
-                <div class="input-field col s8" style="margin: 0" v-if="writtingHidden">
-                  <input type="text" maxlength="1000" v-model="writtingHiddenReason">
-                  <label for="first_name" :disabled="savingHidden">Razón para ocultar acción</label>
-                </div>
-                <div class="col s8">
-                  <a class="waves-effect waves-light btn-small" style="margin-top:.5rem"
-                    @click.prevent="saveHidden()" :disabled="savingHidden">Guardar</a>
-                </div>
-            </div>
           </div>
         </div>
 
