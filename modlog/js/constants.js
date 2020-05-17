@@ -35,6 +35,7 @@ const ACTION_MAP = {
     'markoriginalcontent': ['Post marked as Original Content', 'magic'],
     'modmail_enrollment': ['Modmail enrollment', 'mail-bulk'],
     'muteuser': ['User muted from modmail', 'microphone-slash'],
+    'permabanuser': ['User permanently banned', 'skull-crossbones'],
     'remove_community_topics': ['Community topic(s) removed', 'store-slash'],
     'removecomment': ['Comment removed', 'comment-slash'],
     'removelink': ['Post removed', 'unlink'],
@@ -74,3 +75,13 @@ const ACTION_MAP = {
     'wikirevise': ['Wiki page revised', 'th-list'],
     'wikiunbanned': ['User unbanned from wiki', 'user-check']
 };
+
+const CONTENT_MAP = {
+    'banuser': {'description': 'User: /u/{target_author}, period: {details}.'},
+    'permabanuser': {'description': 'User: /u/{target_author}'},
+    'removelinkauto': {'description': 'Reason: {details}'},
+    'tempbanend': {'description': 'User: /u/{target_author}'},
+    'stickydistinguishcomment': {'description': ''},
+    'stickycomment': {'description': ''},
+    'stickypost': {'description': ''}
+}

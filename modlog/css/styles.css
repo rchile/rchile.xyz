@@ -1,0 +1,7 @@
+html, body {
+    background: #17202a;
+}
+
+.entry .action-body p:last-child {
+    margin-bottom: 0;
+}

@@ -97,6 +97,11 @@ function filterEntries(entries) {
       curr.action = 'tempbanend';
     }
 
+    // Special action type for permanent ban
+    if (curr.action === 'banuser' && curr.details === 'permanent') {
+      curr.action = 'permabanuser';
+    }
+
     final.push(new ModAction(curr));
     return final;
   }, []);

@@ -10,25 +10,26 @@
     integrity="sha256-CuUPKpitgFmSNQuPDL5cEfPOOJT/+bwUlhfumDJ9CI4=" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/solid.min.css" 
     integrity="sha256-pIAzc/BIIo/hSvtNEDIiMTBtR9EfK3COmnH2pt8cPDY=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <div id="app" class="container mt-5">
     <div v-if="loading">Loading...</div>
-    <div v-if="entries">
-      <div class="entry card mb-3" v-for="i in entries">
-        <div class="card-body">
-          <div class="row align-items-start">
-            <h5 class="card-title col-md-8">
-              <i v-if="i.icon" :class="'fas fa-' + i.icon"></i>
-              {{ i.title }} <small class="text-muted">({{ i.entry.action }})</small>
-            </h5>
-            <h6 class="card-subtitle col-md-4 mb-2 text-muted text-md-right">
-              Mod: /u/{{ i.entry.mod }}, {{ i.relatime }}.
-            </h6>
-          </div>
-          <p v-if="i.description">{{ i.description }}</p>
-          <div v-if="i.body" v-html="i.body" class="action-body alert alert-secondary"></div>
+    <div class="entry card shadow mb-3" v-if="entries" v-for="i in entries">
+      <div class="card-body">
+        <div class="row align-items-start">
+          <h5 class="card-title col-md-8">
+            <i v-if="i.icon" :class="'fas fa-' + i.icon"></i>
+            {{ i.title }} <small class="text-muted">({{ i.entry.action }})</small>
+          </h5>
+          <h6 class="card-subtitle col-md-4 mb-2 text-muted text-md-right">
+            Mod: /u/{{ i.entry.mod }}, {{ i.relatime }}.
+            <a v-if="i.permalink" :href="i.permalink" target="_blank"><i class="fas fa-link"></i></a>
+          </h6>
         </div>
+        <p v-if="i.content_title">Content title: "{{ i.content_title }}"</p>
+        <p v-if="i.description">{{ i.description }}</p>
+        <div v-if="i.body" v-html="i.body" class="action-body alert alert-secondary"></div>
       </div>
     </div>
   </div>
