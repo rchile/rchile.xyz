@@ -3,8 +3,8 @@
   let allowLoad = true;
   let timeagoIns = timeago();
   let baseURL = location.hostname === 'localhost'
-    ? 'http://127.0.0.1:8000/api'
-    : 'https://toolbox.rchile.xyz/api';
+    ? 'http://127.0.0.1:5000/api'
+    : 'https://modlog.rchile.net/api';
   let api = axios.create({ baseURL: baseURL });
 
   let app = new Vue({
@@ -115,7 +115,7 @@
   });
 
   function loadEntries(after) {
-    let endpoint = '/modlog/' + (after ? '?after=' + after : '');
+    let endpoint = '/entries' + (after ? '?after=' + after : '');
 
     app.loading = true;
     allowLoad = false;

@@ -1,6 +1,6 @@
 const ENDPOINT = location.hostname === 'localhost'
-    ? 'http://127.0.0.1:8000/api/modlog/'
-    : 'https://toolbox.rchile.xyz/api/modlog/';
+    ? 'http://127.0.0.1:5000/api/entries'
+    : 'https://modlog.rchile.net/api/entries';
 
 const ACTION_MAP = {
     'acceptmoderatorinvite': ['Invite to moderation team accepted', 'user-check'],
